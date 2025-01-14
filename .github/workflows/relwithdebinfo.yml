@@ -1,4 +1,4 @@
-name: Release
+name: RelWithDebInfo
 
 on:
   workflow_dispatch:
@@ -32,9 +32,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Release
+      - name: RelWithDebInfo
         uses: geode-sdk/build-geode-mod@main
         with:
+          build-config: RelWithDebInfo # [vscode] comment this out (and the line below!) to Release mode
+          export-pdb: true # [vscode] comment this out (and the line above!) to Release mode
           # bindings: "RayDeeUx/bindings" # [vscode] comment this out to swap to "geode-sdk/bindings"
           # bindings-ref: "variouscommenttweaks" # comment this out to use default branch
           # sdk: nightly # comment this out to use stable Geode SDK version
