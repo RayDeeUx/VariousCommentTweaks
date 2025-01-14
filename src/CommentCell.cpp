@@ -23,7 +23,7 @@ class $modify(MyCommentCell, CommentCell) {
 	};
 	virtual void draw() {
 		CommentCell::draw();
-		if (!Utils::modEnabled() || m_fields->hasBeenHidden) return;
+		if (!Utils::modEnabled() || m_fields->hasBeenHidden || !typeinfo_cast<CommentCell*>(this)) return;
 		if (!m_fields->blendingApplied) {
 			m_fields->blendingApplied = true;
 			if (Utils::getBool("blendingComments")) MyCommentCell::applyBlendingToComment();
