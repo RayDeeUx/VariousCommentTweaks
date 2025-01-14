@@ -17,6 +17,7 @@ add_library(${PROJECT_NAME} SHARED
     src/TranslateMenu.cpp
     src/TranslateMenu.hpp
     src/CommentCell.cpp
+    src/CustomListView.cpp
     src/main.cpp
     # Add any extra C++ source files here
 )

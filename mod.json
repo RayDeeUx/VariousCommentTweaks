@@ -28,6 +28,11 @@
 			"description": "Open the LikeBaitExterminator mod settings.",
 			"type": "custom:likebaitexterminator"
 		},
+		"compactProfileComments": {
+			"name": "Compact Profile Comments",
+			"type": "bool",
+			"default": true
+		},
 		"copyCommentText": {
 			"name": "Copy + Paste Comment Text Shortcuts",
 			"type": "bool",

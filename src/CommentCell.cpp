@@ -123,7 +123,7 @@ class $modify(MyCommentCell, CommentCell) {
 			}
 		}
 
-		if (isLargeComment || !commentTextLabel || (!isLargeComment && comment->m_commentString.length() < 31)) return;
+		if (isLargeComment || !commentTextLabel || (!isLargeComment && m_fields->originalCommentText.length() < 31)) return;
 		if (menu->getChildrenCount() < 1) return menu->removeMeAndCleanup();
 
 		const float scale = commentTextLabel->getScale();
