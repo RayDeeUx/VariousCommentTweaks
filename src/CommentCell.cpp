@@ -74,7 +74,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		const auto tempLabel = static_cast<CCLabelBMFont*>(dateLabel);
 		menu->setPositionX((dateLabel->getPositionX() - (dateLabel->getContentWidth() / 2.f)) + (isLargeComment ? -2.f : 7.5f));
-		if (string::contains(tempLabel->getString(), "seconds")) menu->setPositionX(menu->getPositionX() + (isLargeComment ? 0.f : 5.25f)); // stupit edge case >:(
+		if (static_cast<std::string>(tempLabel->getString()).length() > 12) menu->setPositionX(menu->getPositionX() + (isLargeComment ? 0.f : 5.25f)); // stupit edge case >:(
 		menu->setPositionY(dateLabel->getPositionY());
 
 		AxisLayout* layout = RowLayout::create()->setGap(2.f)->setDefaultScaleLimits(dateLabelScale, dateLabelScale);
@@ -122,7 +122,7 @@ class $modify(MyCommentCell, CommentCell) {
 		const float widthDiff = commentWidth - menu->getContentWidth();
 		if (widthDiff <= 0.0f) return;
 
-		commentTextLabel->setScale(scale * (widthDiff / commentWidth));
+		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .95f);
 	}
 	void applyBlendingToComment() {
 		if (!Utils::modEnabled() || !Utils::getBool("blendingComments")) return;
