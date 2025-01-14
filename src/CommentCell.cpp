@@ -1,6 +1,6 @@
 #include <Geode/modify/CommentCell.hpp>
-#include "Manager.hpp"
 #include "TranslateMenu.hpp"
+#include "Manager.hpp"
 #include "Utils.hpp"
 
 #define MENU_ID "the-menu-with-buttons-that-im-too-lazy-to-move-into-main-menu-sorry"_spr
@@ -18,25 +18,7 @@ class $modify(MyCommentCell, CommentCell) {
 		std::string authorUsername;
 		std::string originalCommentText;
 		bool isHidden = false;
-		bool blendingApplied = false;
-		bool hasBeenHidden = false;
 	};
-	virtual void draw() {
-		CommentCell::draw();
-		if (!Utils::modEnabled() || m_fields->hasBeenHidden || !typeinfo_cast<CommentCell*>(this)) return;
-		if (!m_fields->blendingApplied) {
-			m_fields->blendingApplied = true;
-			if (Utils::getBool("blendingComments")) MyCommentCell::applyBlendingToComment();
-		}
-		if (const auto menu = this->getChildByIDRecursive(MENU_ID); this->m_comment->m_commentDeleted) {
-			m_fields->hasBeenHidden = true;
-			menu->setScale(0);
-			menu->setZOrder(-3999);
-			menu->setPosition({-3999, -3999});
-			for (const auto node : CCArrayExt<CCNode*>(menu->getChildren())) node->removeMeAndCleanup();
-			return menu->setVisible(false);
-		}
-	}
 	void loadFromComment(GJComment* comment) {
 		m_fields->originalCommentText = comment->m_commentString; // store comment text early before other mods edit the member variable
 
@@ -53,6 +35,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (m_comment->m_isSpam || !dateLabel) return;
 
 		if (Utils::getBool("nameInButton")) MyCommentCell::replaceButtonWithName(comment);
+		if (Utils::getBool("blendingComments")) MyCommentCell::applyBlendingToComment();
 
 		const bool isLargeComment = this->m_height != 36;
 		const float spriteScale = isLargeComment ? 0.95f : 1.0f;
