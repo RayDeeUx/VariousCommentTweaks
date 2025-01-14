@@ -74,7 +74,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		const auto tempLabel = static_cast<CCLabelBMFont*>(dateLabel);
 		menu->setPositionX((dateLabel->getPositionX() - (dateLabel->getContentWidth() / 2.f)) + (isLargeComment ? -2.f : 7.5f));
-		if (string::contains(tempLabel->getString(), "seconds")) menu->setPositionX(menu->getPositionX() + (isLargeComment ? 0.f : 5.f)); // stupit edge case >:(
+		if (string::contains(tempLabel->getString(), "seconds")) menu->setPositionX(menu->getPositionX() + (isLargeComment ? 0.f : 5.25f)); // stupit edge case >:(
 		menu->setPositionY(dateLabel->getPositionY());
 
 		AxisLayout* layout = RowLayout::create()->setGap(2.f)->setDefaultScaleLimits(dateLabelScale, dateLabelScale);
