@@ -6,7 +6,7 @@ using namespace geode::prelude;
 class $modify(MyShareCommentLayer, ShareCommentLayer) {
     bool init(gd::string title, int charLimit, CommentType type, int ID, gd::string desc) {
         if (!ShareCommentLayer::init(title, charLimit, type, ID, desc)) return false;
-        if (!Utils::modEnabled() || !Utils::getBool("copyCommentText") || !this->m_mainLayer || type == CommentType::FriendRequest) return true; // i could block ListDescription as well, but i'm being nice this time
+        if (!Utils::modEnabled() || !Utils::getBool("copyCommentText") || !this->m_mainLayer || (type != CommentType::Account && type != CommentType::Level)) return true;
 
         CircleButtonSprite* pasteSprite = CircleButtonSprite::createWithSpriteFrameName("paste.png"_spr, 1.f, CircleBaseColor::Green, CircleBaseSize::Tiny);
         CCMenuItemSpriteExtra* pasteButton = CCMenuItemSpriteExtra::create(pasteSprite, this, menu_selector(MyShareCommentLayer::onVCTPaste));
