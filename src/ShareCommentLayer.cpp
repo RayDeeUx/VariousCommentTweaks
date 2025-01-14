@@ -28,6 +28,6 @@ class $modify(MyShareCommentLayer, ShareCommentLayer) {
 
     void onVCTPaste(CCObject*) {
         if (!Utils::modEnabled() || !Utils::getBool("copyCommentText") || !this->m_commentInput) return;
-        this->m_commentInput->setString(this->m_commentInput->getString().append(utils::clipboard::read()));
+        this->m_commentInput->setString(static_cast<std::string>(this->m_commentInput->getString()).append(utils::clipboard::read()));
     }
 };
