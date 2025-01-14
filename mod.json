@@ -1,0 +1,169 @@
+{
+	"geode": "4.0.1",
+	"gd": {
+		"win": "2.2074",
+		"mac": "2.2074",
+		"android": "2.2074"
+	},
+	"id": "raydeeux.variouscommenttweaks",
+	"name": "VariousCommentTweaks",
+	"version": "v1.0.0",
+	"developer": "RayDeeUx",
+	"description": "Read the mod name.",
+	"repository": "https://github.com/RayDeeUx/VariousCommentTweaks",
+	"settings": {
+		"enabled": {
+			"name": "Enabled",
+			"description": "Toggles the mod.",
+			"type": "bool",
+			"default": true
+		},
+		"configdir": {
+			"name": "Config Directory: Personal Phrases Filter + Ignored Users",
+			"description": "<cy>(Hopefully.)</c>\nThis setting does literally nothing new except being a button that acts as a shortcut to open the config directory for this mod (which is kind of important for using this mod properly, because this is where you will store your word/phrases filter and your ignored users), because the legendary developers in the Geode Team themselves forgot to add a shortcut button that would have done this exact same thing, and I have gotten far too many folks (rightfully) asking me to find the config directory when using some of my other mods, and I hate repeating the same things over and over again, and I don't know if the next major update for Geode will also repeat this mistake where HJfod forgets to include a config directory shortcut button, so this setting and this button are here for extra insurance, so please enjoy this extra button, I guess. Anyway, by the time you're finished reading this, your device should be finished with opening the config directory; press \"Aight\" to close this window.",
+			"type": "custom:configdir"
+		},
+		"likebaitexterminator": {
+			"name": "LikeBaitExterminator Settings",
+			"description": "Open the LikeBaitExterminator mod settings.",
+			"type": "custom:likebaitexterminator"
+		},
+		"copyCommentText": {
+			"name": "Copy + Paste Comment Text Shortcuts",
+			"type": "bool",
+			"default": true
+		},
+		"toggleCommentVisibility": {
+			"name": "Comment Visibility Toggle",
+			"type": "bool",
+			"default": true
+		},
+		"ignorePeople": {
+			"name": "Ignore People",
+			"description": "Ignore comments from people you've \"ignored\", based on text files inside your config directory. A comment's contents will be replaced with an indication that you've ignored its author.\n\n<cy>This is a purely cosmetic change.</c>\n\n<cr>THIS DOES NOT PRODUCE THE SAME EFFECT AS BLOCKING PEOPLE THROUGH PROFILES.</c>",
+			"type": "bool",
+			"default": true
+		},
+		"personalFilter": {
+			"name": "Personal Phrases Filter",
+			"description": "Hide comments containing words or phrases you dislike, based on text files inside your config directory. A comment's contents will be replaced with an indication that it contained words you dislike.\n\n<cy>This is a purely cosmetic change, and does not apply to your own comments.</c>",
+			"type": "bool",
+			"default": true
+		},
+		"hideRoleplay": {
+			"name": "Roleplay Filter",
+			"description": "Enable a rudimentary roleplay filter for comments.\n\n<cy>This is a purely cosmetic change, and is not customizable via the config directory. False positives and false negatives will happen.</c>\n\n<cr>The fact that this feature needed to exist speaks a lot about the cesspool that the daily chat has become.</c>",
+			"type": "bool",
+			"default": true
+		},
+		"nameInButton": {
+			"name": "Show Level/List Name Instead of Level/List ID",
+			"description": "When viewing comment histories, replace the level/list ID text with the name of that level/list if that level ID has been downloaded or if that list ID has been added to your favorites.",
+			"type": "bool",
+			"default": true
+		},
+		"translateComments": {
+			"name": "Translate Comments",
+			"description": "<cl>Dedicated to TastyForReal. o7</c>\n\nOpens a menu to <cl>translate comments</c> <cy>in your web browser</c>, with three translator options: <cl>LibreTranslate</c>, <cl>DeepL</c>, and <cl>Google Translate</c>.\n\n<cy>Translator API support is</c> <c_>NOT</c> <cy>coming to this mod.</c>",
+			"type": "bool",
+			"default": true
+		},
+		"sourceLanguage": {
+			"name": "Translation Source Language",
+			"description": "Select the language you would like to translate from.\n\n<cy>Not all languages are supported by DeepL or LibreTranslate, so choose carefully!</c>",
+			"type": "string",
+			"default": "Detect language",
+			"one-of": [
+				"Detect language", "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Azerbaijani",
+				"Belarusian", "Bengali", "Bulgarian", "Chinese (Simplified)", "Chinese (Traditional)",
+				"Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Filipino", "Finnish",
+				"French", "Georgian", "German", "Greek", "Haitian Creole", "Hebrew", "Hindi", "Hungarian", "Icelandic",
+				"Indonesian", "Irish", "Italian", "Japanese", "Korean", "Lao", "Latvian", "Lithuanian",
+				"Luxembourgish", "Malay", "Mongolian", "Nepali",  "Norwegian", "Persian", "Polish", "Portuguese",
+				"Punjabi", "Romanian", "Russian", "Sanskrit", "Scots Gaelic", "Serbian", "Slovak", "Slovenian",
+				"Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Thai", "Turkish", "Ukrainian", "Urdu",
+				"Uzbek", "Vietnamese", "Welsh", "Xhosa", "Yiddish", "Yoruba", "Zulu",
+				"Assamese", "Aymara", "Bambara", "Basque", "Bhojpuri", "Bosnian",
+				"Catalan", "Cebuano", "Chichewa", "Corsican",
+				"Dhivehi", "Dogri", "Esperanto", "Ewe", "Frisian",
+				"Galician", "Guarani", "Gujarati",
+				"Hausa", "Hawaiian", "Hmong", "Igbo", "Ilocano", "Javanese",
+				"Kannada", "Kazakh", "Khmer", "Kinyarwanda", "Konkani",
+				"Krio", "Kurdish (Kurmanji)", "Kurdish (Sorani)", "Kyrgyz",
+				"Latin", "Lingala", "Luganda",
+				"Maithili", "Macedonian", "Malagasy", "Malayalam",
+				"Maltese", "Maori", "Marathi",
+				"Meiteilon (Manipuri)", "Mizo", "Myanmar (Burmese)",
+				"Odia (Oriya)", "Oromo", "Pashto", "Quechua",
+				"Samoan", "Sepedi", "Sesotho", "Shona", "Sindhi", "Sinhala",
+				"Tajik", "Tamil", "Tatar", "Telugu", "Tigrinya",
+				"Tsonga", "Turkmen", "Twi", "Uyghur"
+			]
+		},
+		"targetLanguage": {
+			"name": "Translation Target Language",
+			"description": "Select the language you would like to translate into.\n\n<cy>Not all languages are supported by DeepL or LibreTranslate, so choose carefully!</c>",
+			"type": "string",
+			"default": "English",
+			"one-of": [
+				"Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Azerbaijani",
+				"Belarusian", "Bengali", "Bulgarian", "Chinese (Simplified)", "Chinese (Traditional)",
+				"Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Filipino", "Finnish",
+				"French", "Georgian", "German", "Greek", "Haitian Creole", "Hebrew", "Hindi", "Hungarian", "Icelandic",
+				"Indonesian", "Irish", "Italian", "Japanese", "Korean", "Lao", "Latvian", "Lithuanian",
+				"Luxembourgish", "Malay", "Mongolian", "Nepali",  "Norwegian", "Persian", "Polish", "Portuguese",
+				"Punjabi", "Romanian", "Russian", "Sanskrit", "Scots Gaelic", "Serbian", "Slovak", "Slovenian",
+				"Somali", "Spanish", "Sundanese", "Swahili", "Swedish", "Thai", "Turkish", "Ukrainian", "Urdu",
+				"Uzbek", "Vietnamese", "Welsh", "Xhosa", "Yiddish", "Yoruba", "Zulu",
+				"Assamese", "Aymara", "Bambara", "Basque", "Bhojpuri", "Bosnian",
+				"Catalan", "Cebuano", "Chichewa", "Corsican",
+				"Dhivehi", "Dogri", "Esperanto", "Ewe", "Frisian",
+				"Galician", "Guarani", "Gujarati",
+				"Hausa", "Hawaiian", "Hmong", "Igbo", "Ilocano", "Javanese",
+				"Kannada", "Kazakh", "Khmer", "Kinyarwanda", "Konkani",
+				"Krio", "Kurdish (Kurmanji)", "Kurdish (Sorani)", "Kyrgyz",
+				"Latin", "Lingala", "Luganda",
+				"Maithili", "Macedonian", "Malagasy", "Malayalam",
+				"Maltese", "Maori", "Marathi",
+				"Meiteilon (Manipuri)", "Mizo", "Myanmar (Burmese)",
+				"Odia (Oriya)", "Oromo", "Pashto", "Quechua",
+				"Samoan", "Sepedi", "Sesotho", "Shona", "Sindhi", "Sinhala",
+				"Tajik", "Tamil", "Tatar", "Telugu", "Tigrinya",
+				"Tsonga", "Turkmen", "Twi", "Uyghur"
+			]
+		},
+		"blendingComments": {
+			"name": "Readable Mode (Stronger Blending) [READ ->]",
+			"description": "This setting is here when there is a transparent background surrounding comment text. That's usually not true in most cases, so this is disabled by default.",
+			"type": "bool",
+			"default": false
+		}
+	},
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": ">=1.18.0",
+			"importance": "required"
+		},
+		{
+			"id": "raydeeux.likebaitexterminator",
+			"version": ">=1.4.0",
+			"importance": "recommended"
+		}
+	],
+	"resources": {
+		"spritesheets": {
+			"spritesheetOne": [
+				"resources/*.png"
+			]
+		}
+	},
+	"issues": {
+		"url": "https://discord.com/channels/911701438269386882/1205523212444639292",
+		"info": "Ping me <cl>(@erymanthus)</c> in the Geode SDK Discord server's <cl>#help</c> channel if you need help. <cr>DMs are NOT accepted.</c>"
+	},
+	"links": {
+		"community": "https://discord.gg/WqZBYdBWZW",
+		"homepage": "https://discord.com/channels/822510988409831486/1206371881222144020"
+	}
+}
