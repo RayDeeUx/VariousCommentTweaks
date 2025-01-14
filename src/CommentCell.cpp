@@ -82,6 +82,7 @@ class $modify(MyCommentCell, CommentCell) {
 		menu->setLayout(layout);
 		menu->setID(MENU_ID);
 		menu->setAnchorPoint({1.f, 0.5f});
+		if (Utils::getBool("largerButtons")) menu->setScale(1.2f); else menu->setScale(1.0f);
 		this->m_mainLayer->addChild(menu);
 
 		if (Utils::getBool("ignorePeople") && manager->ignoredUsers.contains(comment->m_accountID)) {
@@ -119,10 +120,10 @@ class $modify(MyCommentCell, CommentCell) {
 		const float commentWidth = commentTextLabel->getContentWidth();
 		if (commentWidth <= 0.0f) return;
 
-		const float widthDiff = commentWidth - menu->getContentWidth();
+		const float widthDiff = commentWidth - (menu->getContentWidth() * menu->getScale());
 		if (widthDiff <= 0.0f) return;
 
-		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .95f);
+		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .975f);
 	}
 	void applyBlendingToComment() {
 		if (!Utils::modEnabled() || !Utils::getBool("blendingComments")) return;

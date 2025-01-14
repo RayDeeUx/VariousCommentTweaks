@@ -33,6 +33,15 @@
 			"type": "bool",
 			"default": true
 		},
+		"largerButtons": {
+			"name": "Slightly Larger Buttons",
+			"type": "bool",
+			"default":  {
+				"win": false,
+				"mac": false,
+				"android": true
+			}
+		},
 		"copyCommentText": {
 			"name": "Copy + Paste Comment Text Shortcuts",
 			"type": "bool",
