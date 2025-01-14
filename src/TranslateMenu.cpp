@@ -25,7 +25,7 @@ bool TranslateMenu::init(const std::string& text) {
 	if (this->m_button1) this->m_button1->getParent()->removeMeAndCleanup(); // the parent is a CCMenuItemSpriteExtra, calm down
 	if (this->m_buttonMenu) this->m_buttonMenu->setContentWidth(390.f);
 	if (this->m_mainLayer) static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
-	this->urlEncoded = TranslateMenu::encodeToURL(text);
+	TranslateMenu::encodeToURL(text);
 
 	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.8f);
 	CCMenuItemSpriteExtra* libreTranslateButton = CCMenuItemSpriteExtra::create(libreTranslate, this, menu_selector(TranslateMenu::onLibreTranslate));
@@ -86,48 +86,33 @@ void TranslateMenu::onCloseTranslateMenu(CCObject*) {
 void TranslateMenu::onBoogleTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
-	const auto languagesMap = Manager::getSharedInstance()->languages;
-	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
-	const std::string& targetLangSetting = Utils::getString("targetLanguage");
-	const std::string& sourceLang = languagesMap.contains(sourceLangSetting)
-	? languagesMap.find(sourceLangSetting)->second : "auto";
-	const std::string& targetLang = languagesMap.contains(targetLangSetting)
-		? languagesMap.find(targetLangSetting)->second : "en";
-	const std::string& url = fmt::format("https://translate.google.com/?sl={}&tl={}&text={}", sourceLang, targetLang, urlEncoded);
-	const auto dispatcher = CCKeyboardDispatcher::get();
-	if (dispatcher->getShiftKeyPressed() && dispatcher->getAltKeyPressed()) geode::utils::clipboard::write(url);
+	Manager* manager = Manager::getSharedInstance();
+	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->languages);
+	const std::string& url = fmt::format("https://translate.google.com/?sl={}&tl={}&text={}", sourceTarget.first, sourceTarget.second, manager->urlEncoded);
+	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
+	if (CCKeyboardDispatcher::get()->getAltKeyPressed()) geode::utils::clipboard::write(url);
 	else geode::utils::web::openLinkInBrowser(url);
 }
 
 void TranslateMenu::onDeepLTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
-	const auto languagesMap = Manager::getSharedInstance()->deeplLanguages;
-	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
-	const std::string& targetLangSetting = Utils::getString("targetLanguage");
-	std::string sourceLang = languagesMap.contains(sourceLangSetting)
-		? languagesMap.find(sourceLangSetting)->second : "en";
-	if (string::startsWith(sourceLang, "zh-")) sourceLang = "zh"; // 中文 compat, for some reason all chinese is treated as "zh" when used as a source language
-	else if (sourceLangSetting == "English") sourceLang = "es"; // trick deepl into opening properly
-	const std::string& targetLang = languagesMap.contains(targetLangSetting)
-		? languagesMap.find(targetLangSetting)->second : "en";
-	geode::utils::web::openLinkInBrowser(fmt::format("https://www.deepl.com/en/translator#{}/{}/{}", targetLang, sourceLang, urlEncoded));
+	Manager* manager = Manager::getSharedInstance();
+	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->deeplLanguages);
+	geode::utils::web::openLinkInBrowser(fmt::format("https://www.deepl.com/en/translator#{}/{}/{}", sourceTarget.second, sourceTarget.first, manager->urlEncoded));
+	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 }
 
 void TranslateMenu::onLibreTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
-	const auto languagesMap = Manager::getSharedInstance()->languages;
-	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
-	const std::string& targetLangSetting = Utils::getString("targetLanguage");
-	const std::string& sourceLang = languagesMap.contains(sourceLangSetting)
-	? languagesMap.find(sourceLangSetting)->second : "auto";
-	const std::string& targetLang = languagesMap.contains(targetLangSetting)
-		? languagesMap.find(targetLangSetting)->second : "en";
-	geode::utils::web::openLinkInBrowser(fmt::format("https://libretranslate.com/?source={}&target={}&q={}", sourceLang, targetLang, urlEncoded));
+	Manager* manager = Manager::getSharedInstance();
+	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->languages);
+	geode::utils::web::openLinkInBrowser(fmt::format("https://libretranslate.com/?source={}&target={}&q={}", sourceTarget.first, sourceTarget.second, manager->urlEncoded));
+	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 }
 
-std::string TranslateMenu::encodeToURL(const std::string& text) {
+void TranslateMenu::encodeToURL(const std::string& text) {
 	// adapted from tastyforreal
 	// then edited for consistency
 	// should work in most cases w/o "%20" or '+' collisions
@@ -137,5 +122,16 @@ std::string TranslateMenu::encodeToURL(const std::string& text) {
 		else if (c == '+' || c == '!' || c == '*' || c == '(' || c == ')' || c == '-' || c == '.' || c == '_' || isalnum(static_cast<unsigned char>(c))) stream << c;
 		else stream << '%' << std::hex << (static_cast<unsigned int>(c) & 0xFF);
 	}
-	return stream.str();
+	Manager* manager = Manager::getSharedInstance();
+	manager->urlEncoded = stream.str();
+}
+
+std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap) {
+	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
+	const std::string& targetLangSetting = Utils::getString("targetLanguage");
+	const std::string& sourceLang = languagesMap.contains(sourceLangSetting)
+	? languagesMap.find(sourceLangSetting)->second : "auto";
+	const std::string& targetLang = languagesMap.contains(targetLangSetting)
+		? languagesMap.find(targetLangSetting)->second : "en";
+	return {sourceLang, targetLang};
 }

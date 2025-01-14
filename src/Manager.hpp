@@ -17,6 +17,7 @@ public:
 	std::unordered_set<int> ignoredUsers;
 
 	std::string ownUsername;
+	std::string urlEncoded;
 
 	// adapted from tastyforreal
 	std::unordered_map<std::string, std::string> languages = {

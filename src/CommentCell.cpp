@@ -174,7 +174,14 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	void onVCTTrans(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
-		TranslateMenu::create(m_fields->originalCommentText)->show();
+		TranslateMenu* translateMenu = TranslateMenu::create(m_fields->originalCommentText);
+		if (!Utils::isModLoaded("timestepyt.deltarune_textboxes") && !CCKeyboardDispatcher::get()->getShiftKeyPressed())
+			return translateMenu->show();
+		TranslateMenu::encodeToURL(m_fields->originalCommentText);
+		const std::string& preferred = Utils::getString("preferredTranslator");
+		if (preferred == "Google") return translateMenu->onBoogleTranslate(nullptr);
+		if (preferred == "DeepL") return translateMenu->onDeepLTranslate(nullptr);
+		if (preferred == "LibreTranslate") return translateMenu->onLibreTranslate(nullptr);
 	}
 	void onVCTCopy(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("copyCommentText")) return;

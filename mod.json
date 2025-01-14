@@ -78,9 +78,20 @@
 		},
 		"translateComments": {
 			"name": "Translate Comments",
-			"description": "<cl>Dedicated to TastyForReal. o7</c>\n\nOpens a menu to <cl>translate comments</c> <cy>in your web browser</c>, with three translator options: <cl>LibreTranslate</c>, <cl>DeepL</c>, and <cl>Google Translate</c>.\n\n<cy>Translator API support is</c> <c_>NOT</c> <cy>coming to this mod.</c>",
+			"description": "<cl>Dedicated to TastyForReal. o7</c>\n\nOpens a menu to <cl>translate comments</c> <cy>in your web browser</c>, with three translator options: <cl>LibreTranslate</c>, <cl>DeepL</c>, and <cl>Google Translate</c>.\n\n<cy>Translator API support will</c> <c_>NOT</c> <cy>be a part of this mod.</c>",
 			"type": "bool",
 			"default": true
+		},
+		"preferredTranslator": {
+			"name": "Preferred Translator",
+			"description": "Choose your preferred translator <cj>when holding either SHIFT key</c> or <cj>when Deltarune Textboxes is loaded</c>:\n<cl>LibreTranslate</c>, <cl>DeepL</c>, or <cl>Google Translate</c>.",
+			"type": "string",
+			"default": "LibreTranslate",
+			"one-of": [
+				"LibreTranslate",
+				"DeepL",
+				"Google"
+			]
 		},
 		"sourceLanguage": {
 			"name": "Translation Source Language",
