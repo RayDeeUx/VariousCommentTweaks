@@ -22,9 +22,9 @@ bool TranslateMenu::init(const std::string& text) {
 	if (!FLAlertLayer::init(nullptr, fmt::format("From: {} • To: {}", sourceLanguage, Utils::getString("targetLanguage")).c_str(),
 		text, "foo", nullptr, 420.f, false, 300.f, .69f)) return false;
 	this->setID("TranslateMenu");
-	this->m_button1->getParent()->removeMeAndCleanup(); // the parent is a CCMenuItemSpriteExtra, calm down
-	this->m_buttonMenu->setContentWidth(390.f);
-	static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
+	if (this->m_button1) this->m_button1->getParent()->removeMeAndCleanup(); // the parent is a CCMenuItemSpriteExtra, calm down
+	if (this->m_buttonMenu) this->m_buttonMenu->setContentWidth(390.f);
+	if (this->m_mainLayer) static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
 	this->urlEncoded = TranslateMenu::encodeToURL(text);
 
 	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.8f);
@@ -62,12 +62,14 @@ bool TranslateMenu::init(const std::string& text) {
 	CCMenuItemSpriteExtra* modSettingsButton = CCMenuItemSpriteExtra::create(modSettingsButtonSprite, this, menu_selector(TranslateMenu::onOpenModSettings));
 	modSettingsButton->setID("mod-setting-button"_spr);
 
-	this->m_buttonMenu->addChild(closeButton);
-	this->m_buttonMenu->addChild(libreTranslateButton);
-	this->m_buttonMenu->addChild(deeplTranslateButton);
-	this->m_buttonMenu->addChild(boogleTranslateButton);
-	this->m_buttonMenu->addChild(modSettingsButton);
-	this->m_buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
+	if (this->m_buttonMenu) {
+		this->m_buttonMenu->addChild(closeButton);
+		this->m_buttonMenu->addChild(libreTranslateButton);
+		this->m_buttonMenu->addChild(deeplTranslateButton);
+		this->m_buttonMenu->addChild(boogleTranslateButton);
+		this->m_buttonMenu->addChild(modSettingsButton);
+		this->m_buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
+	}
 	// yes, jeffery, i need all five buttons in the menu leave me alone :(
 
 	return true;

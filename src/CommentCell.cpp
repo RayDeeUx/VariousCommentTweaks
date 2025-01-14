@@ -26,7 +26,7 @@ class $modify(MyCommentCell, CommentCell) {
 		m_fields->authorAccountID = comment->m_accountID;
 		m_fields->authorUsername = comment->m_userName;
 
-		if (!Utils::modEnabled() || comment->m_commentDeleted) return;
+		if (!Utils::modEnabled() || comment->m_commentDeleted || !m_mainLayer) return;
 
 		const auto manager = Manager::getSharedInstance();
 
@@ -39,7 +39,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		const bool isLargeComment = this->m_height != 36;
 		const float spriteScale = isLargeComment ? 0.95f : 1.0f;
-		const float menuContentWidth = !isLargeComment ? 28.5f : 38.5f;
+		const float menuContentWidth = !isLargeComment ? 30.f : 40.f;
 
 		CircleButtonSprite* copyButtonSprite = CircleButtonSprite::createWithSpriteFrameName("copy.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
 		CCMenuItemSpriteExtra* copyStuffButton = CCMenuItemSpriteExtra::create(copyButtonSprite, this, menu_selector(MyCommentCell::onVCTCopy));
@@ -71,14 +71,18 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("translateComments")) menu->addChild(translateButton);
 
 		menu->setContentWidth(menuContentWidth);
-		menu->setPositionX((dateLabel->getPositionX() - (dateLabel->getContentWidth() / 2.f)) + (isLargeComment ? -1.25f : 7.5f));
+
+		const auto tempLabel = static_cast<CCLabelBMFont*>(dateLabel);
+		menu->setPositionX((dateLabel->getPositionX() - (dateLabel->getContentWidth() / 2.f)) + (isLargeComment ? -2.f : 7.5f));
+		if (string::contains(tempLabel->getString(), "seconds")) menu->setPositionX(menu->getPositionX() + (isLargeComment ? 0.f : 5.f)); // stupit edge case >:(
 		menu->setPositionY(dateLabel->getPositionY());
+
 		AxisLayout* layout = RowLayout::create()->setGap(2.f)->setDefaultScaleLimits(dateLabelScale, dateLabelScale);
 		layout->ignoreInvisibleChildren(true);
 		menu->setLayout(layout);
 		menu->setID(MENU_ID);
 		menu->setAnchorPoint({1.f, 0.5f});
-		this->addChild(menu);
+		this->m_mainLayer->addChild(menu);
 
 		if (Utils::getBool("ignorePeople") && manager->ignoredUsers.contains(comment->m_accountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
@@ -101,7 +105,7 @@ class $modify(MyCommentCell, CommentCell) {
 				else if (utils::string::endsWith(word, "*")) numAsterisks += 1;
 			}
 			if (numAsterisks > 1 && numVerbs > 0) {
-				MyCommentCell::passiveHidingComment("Comment has concerning roleplay");
+				MyCommentCell::passiveHidingComment("Comment contains concerning roleplay");
 				MyCommentCell::hideButtons(menu, false);
 			}
 		}
@@ -177,25 +181,25 @@ class $modify(MyCommentCell, CommentCell) {
 		Notification::create("Comment text copied!")->show();
 	}
 	void onVCTHide(CCObject*) {
-		if (!Utils::modEnabled() || !Utils::getBool("toggleCommentVisibility")) return;
+		if (!Utils::modEnabled() || !Utils::getBool("toggleCommentVisibility") || !m_mainLayer) return;
 		MyCommentCell::hideCommentVCT();
 	}
 	void onVCTIgnore(CCObject*) {
-		if (!Utils::modEnabled() || !Utils::getBool("ignorePeople")) return;
+		if (!Utils::modEnabled() || !Utils::getBool("ignorePeople") || !m_mainLayer) return;
 		if (m_fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't ignore yourself!")->show();
 		if (m_fields->authorAccountID == 71) return Notification::create("Nice try, but you can't ignore RobTop!")->show();
 		MyCommentCell::passiveHidingComment("Comment from someone you ignored");
-		MyCommentCell::hideButtons(this->getChildByID(MENU_ID));
+		MyCommentCell::hideButtons(this->m_mainLayer->getChildByID(MENU_ID));
 		Utils::addIgnoredUser(m_fields->authorAccountID, m_fields->authorUsername);
 		Notification::create(fmt::format("{} was ignored!", m_fields->authorUsername))->show();
 	}
 	void passiveHidingComment(const std::string_view reason) {
-		if (!Utils::modEnabled()) return;
+		if (!Utils::modEnabled() || !m_mainLayer) return;
 		if (!m_fields->isHidden) MyCommentCell::hideCommentVCT(reason);
 		else if (const auto fakeLabel = this->m_mainLayer->getChildByID(REPLACEMENT_ID)) static_cast<CCLabelBMFont*>(fakeLabel)->setString(formattedReason);
 	}
 	void hideCommentVCT(const std::string_view reason = "Comment was hidden manually") {
-		if (!Utils::modEnabled()) return;
+		if (!Utils::modEnabled() || !m_mainLayer) return;
 
 		const bool isHiddenBefore = m_fields->isHidden;
 		m_fields->isHidden = !m_fields->isHidden;
@@ -214,11 +218,10 @@ class $modify(MyCommentCell, CommentCell) {
 		}
 
 		if (this->m_height == 36) {
+			const auto label = static_cast<CCLabelBMFont*>(this->getChildByIDRecursive("comment-text-label"));
 			if (const auto node = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label"))
 				node->setVisible(isHiddenBefore);
-
-			const auto label = static_cast<CCLabelBMFont*>(this->getChildByIDRecursive("comment-text-label"));
-			label->setVisible(isHiddenBefore);
+			else label->setVisible(isHiddenBefore);
 
 			if (!fakeLabel) return;
 			fakeLabel->setColor(label->getColor());
@@ -227,13 +230,12 @@ class $modify(MyCommentCell, CommentCell) {
 			return fakeLabel->setScale(.7f);
 		}
 
-		if (const auto node = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area"))
-			node->setVisible(isHiddenBefore);
-
 		const auto commentTextArea = this->getChildByIDRecursive("comment-text-area");
 		if (!commentTextArea) return;
 
-		commentTextArea->setVisible(isHiddenBefore);
+		if (const auto node = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area"))
+			node->setVisible(isHiddenBefore);
+		else commentTextArea->setVisible(isHiddenBefore);
 
 		if (!fakeLabel) return;
 
