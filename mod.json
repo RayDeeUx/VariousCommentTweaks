@@ -23,6 +23,11 @@
 			"description": "<cy>(Hopefully.)</c>\nThis setting does literally nothing new except being a button that acts as a shortcut to open the config directory for this mod (which is kind of important for using this mod properly, because this is where you will store your word/phrases filter and your ignored users), because the legendary developers in the Geode Team themselves forgot to add a shortcut button that would have done this exact same thing, and I have gotten far too many folks (rightfully) asking me to find the config directory when using some of my other mods, and I hate repeating the same things over and over again, and I don't know if the next major update for Geode will also repeat this mistake where HJfod forgets to include a config directory shortcut button, so this setting and this button are here for extra insurance, so please enjoy this extra button, I guess. Anyway, by the time you're finished reading this, your device should be finished with opening the config directory; press \"Aight\" to close this window.",
 			"type": "custom:configdir"
 		},
+		"updatelists": {
+			"name": "Refresh Lists: Personal Phrases Filter + Ignored Users",
+			"description": "Refreshes your personal phrases filter and ignored users list.",
+			"type": "custom:updatelists"
+		},
 		"likebaitexterminator": {
 			"name": "LikeBaitExterminator Settings",
 			"description": "Open the LikeBaitExterminator mod settings.",
@@ -54,13 +59,13 @@
 		},
 		"ignorePeople": {
 			"name": "Hide Comments From Ignored People",
-			"description": "<cl>Original idea by-- what's that?</c>\n<cl>They deserve to be on *that* list? Oh.</c>\n\nHide comments from <co>people you \"ignore\"</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cr>remove</c> <cy>someone from your ignored users list, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>restart the game.</c>\n\n<cy>This is a purely cosmetic change.</c>\n<cr>\"IGNORING\" PEOPLE DOES</c> <c_>NOT</c> <cr>PRODUCE THE SAME EFFECT AS BLOCKING PEOPLE THROUGH PROFILES.</c>",
+			"description": "<cl>Original idea by-- what's that?</c>\n<cl>They deserve to be on *that* list? Oh.</c>\n\nHide comments from <co>people you \"ignore\"</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cr>remove</c> <cy>someone from your ignored users list, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>refresh your lists.</c>\n\n<cy>This is a purely cosmetic change.</c>\n<cr>\"IGNORING\" PEOPLE DOES</c> <c_>NOT</c> <cr>PRODUCE THE SAME EFFECT AS BLOCKING PEOPLE THROUGH PROFILES.</c>",
 			"type": "bool",
 			"default": true
 		},
 		"personalFilter": {
 			"name": "Personal Phrases Filter",
-			"description": "Hide comments containing <co>words or phrases you dislike</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cg>add</c> <cy>or</c> <cr>remove</c> <cy>a word/phrase from your personal phrase filter, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>restart the game.</c>\n\n<cy>This is a purely cosmetic change, and</c> <co>does not apply to your own comments.</c>",
+			"description": "Hide comments containing <co>words or phrases you dislike</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cg>add</c> <cy>or</c> <cr>remove</c> <cy>a word/phrase from your personal phrase filter, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>refresh your lists.</c>\n\n<cy>This is a purely cosmetic change, and</c> <co>does not apply to your own comments.</c>",
 			"type": "bool",
 			"default": true
 		},

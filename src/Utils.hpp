@@ -1,4 +1,5 @@
 #pragma once
+#include "Manager.hpp"
 
 using namespace geode::prelude;
 
@@ -17,4 +18,5 @@ namespace Utils {
 	std::string getModVersion(Mod* mod);
 
 	void addIgnoredUser(int accountID, std::string username);
+	bool updateLists(Manager* manager = Manager::getSharedInstance());
 }

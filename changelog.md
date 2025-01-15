@@ -1,5 +1,6 @@
 # VariousCommentTweaks Changelog
 ## v1.0.1
+- Added a shortcut to refresh ignored users/filtered phrases.
 - Rename a few config settings to color more words and make it clearer on how to adjust ignored users/filtered phrases.
 - Added `Better Comments Section` by Jumbonova as a <co>suggested</c> dependency for additional filters.
 ## v1.0.0
