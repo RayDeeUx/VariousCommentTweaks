@@ -48,6 +48,11 @@ namespace Utils {
 			FLAlertLayer::create("Oops!", fmt::format("{} is already in your list of <cr>ignored</c> users.\nRevisit your mod settings if you believe this is a mistake.\n--VariousCommentTweaks", username), "Close")->show();
 			return false;
 		}
+		if (contains<int>(manager->favoriteUsers, accountID)) {
+			log::info("tried to favorite user: {} (username: {}) but they are already favorited (possibly from friends list)", accountID, username);
+			Notification::create("{} is already a favorite user!")->show();
+			return false;
+		}
 		log::info("ignoring user: {} (username: {})", accountID, username);
 		manager->favoriteUsers.push_back(accountID);
 		std::ofstream output;
@@ -60,8 +65,11 @@ namespace Utils {
 	bool updateLists(Manager* manager) {
 		manager->dislikedWords.clear();
 		manager->ignoredUsers.clear();
-		auto pathDislikedWords = (Mod::get()->getConfigDir() / "dislikedWords.txt");
-		auto pathIgnoredUsers = (Mod::get()->getConfigDir() / "ignoredUsers.txt");
+		manager->favoriteUsers.clear();
+		auto configDir = Mod::get()->getConfigDir();
+		auto pathDislikedWords = (configDir / "dislikedWords.txt");
+		auto pathIgnoredUsers = (configDir / "ignoredUsers.txt");
+		auto pathFavoriteUsers = (configDir / "favoriteUsers.txt");
 		if (!std::filesystem::exists(pathDislikedWords)) {
 			std::string content = R"(# hello there
 # this is the text file where you add phrases or words you don't want to see in comments
@@ -102,8 +110,32 @@ namespace Utils {
 				std::string ignoredUserStringModified = ignoredUserString;
 				if (ignoredUserStringModified.ends_with(" [VCT] #"))
 					ignoredUserStringModified = ignoredUserStringModified.substr(0, ignoredUserStringModified.find(" # [VCT] Username: "));
-				int ignoredUserID = utils::numFromString<int>(ignoredUserStringModified).unwrapOr(-2);
-				if (ignoredUserID > 0 && ignoredUserID != 71) manager->ignoredUsers.push_back(ignoredUserID);
+				if (int ignoredUserID = utils::numFromString<int>(ignoredUserStringModified).unwrapOr(-2); ignoredUserID > 0 && ignoredUserID != 71)
+					manager->ignoredUsers.push_back(ignoredUserID);
+			}
+		}
+		if (!std::filesystem::exists(pathFavoriteUsers)) {
+			std::string content = R"(# hello there
+# this is the text file where you add user IDs of those whose comments you'd like to highlight
+# separate user IDs by new lines like you see in this file
+# also, i didn't include any user IDs in here by default as that would
+# cause more confusion for you in the long run, let's be honest
+# don't worry, the mod ignores all lines that start with "#" and aren't exclusively numbers
+# you will need to restart the game to apply your changes when editing this file
+# any crashes or bugs caused by improperly editing this file will be ignored
+# have fun!
+# --raydeeux)";
+			(void) utils::file::writeString(pathFavoriteUsers, content);
+		} else {
+			std::ifstream favoriteUsersFile(pathFavoriteUsers);
+			std::string favoriteUserString;
+			while (std::getline(favoriteUsersFile, favoriteUserString)) {
+				if (favoriteUserString.starts_with('#') || favoriteUserString.empty()) continue;
+				std::string favoriteUserStringModified = favoriteUserString;
+				if (favoriteUserStringModified.ends_with(" [VCT] #"))
+					favoriteUserStringModified = favoriteUserStringModified.substr(0, favoriteUserStringModified.find(" # [VCT] Username: "));
+				if (int favoriteUserID = utils::numFromString<int>(favoriteUserStringModified).unwrapOr(-2); favoriteUserID > 0)
+					manager->favoriteUsers.push_back(favoriteUserID);
 			}
 		}
 		return true;

@@ -18,10 +18,12 @@ class $modify(MyCommentCell, CommentCell) {
 		std::string authorUsername;
 		std::string originalCommentText;
 		bool isHidden = false;
+		int originalLikeCount;
 	};
 	void loadFromComment(GJComment* comment) {
 		const auto fields = m_fields.self();
 		fields->originalCommentText = comment->m_commentString; // store comment text early before other mods edit the member variable
+		fields->originalLikeCount = comment->m_likeCount;
 
 		CommentCell::loadFromComment(comment);
 		fields->authorAccountID = comment->m_accountID;
@@ -118,6 +120,12 @@ class $modify(MyCommentCell, CommentCell) {
 				MyCommentCell::passiveHidingComment("Comment contains concerning roleplay");
 				MyCommentCell::hideButtons(menu, false);
 			}
+		}
+
+		if (const auto lbe = Utils::getMod("raydeeux.likebaitexterminator"); lbe->getSettingValue<bool>("enabled")) {
+			comment->m_likeCount = fields->originalLikeCount;
+			if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText"))
+				comment->m_commentString = fields->originalCommentText;
 		}
 
 		if (isLargeComment || !commentTextLabel || (!isLargeComment && fields->originalCommentText.length() < 31)) return;
@@ -283,7 +291,7 @@ class $modify(MyCommentCell, CommentCell) {
 		node->updateLayout();
 	}
 	void recolorCellBackground() const {
-		if (!Utils::modEnabled() || this->m_backgroundLayer) return;
+		if (!Utils::modEnabled() || !Utils::getBool("favoritePeople") || this->m_backgroundLayer) return;
 		const auto [r, g, b, a] = Utils::getColorAlpha("favoriteUserColor");
 		this->m_backgroundLayer->setColor({r, g, b});
 		this->m_backgroundLayer->setOpacity(a);

@@ -44,9 +44,9 @@ public:
 		return false;
 	}
 	void onSettingsButton(CCObject*) {
-		if (m_title == "LikeBaitExterminator Settings") {
+		if (m_title == "Likebait Filter Settings (LikeBaitExterminator)") {
 			if (Mod* lbe = Utils::getMod("raydeeux.likebaitexterminator")) return openSettingsPopup(lbe);
-			return FLAlertLayer::create("Hey there!", "LikebaitExterminator isn't loaded right now.", "Close")->show();
+			return FLAlertLayer::create("Hey there!", "LikebaitExterminator isn't loaded right now. You can install it from the mod index on your own if you'd like.", "Close")->show();
 		}
 		if (m_title == "Refresh Personal Phrases Filter + Ignored Users") {
 			if (Utils::updateLists()) return FLAlertLayer::create("Success!", "You've successfully <cg>refreshed</c> your <co>personal phrases filter</c> and <co>ignored users list</c>.", "Close")->show();
