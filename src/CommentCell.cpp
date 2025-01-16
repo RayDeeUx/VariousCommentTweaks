@@ -308,11 +308,12 @@ class $modify(MyCommentCell, CommentCell) {
 		node->updateLayout();
 	}
 	void recolorCellBackground() {
-		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer) return;
+		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT)) return;
 		CCLayerColor* highlight = CCLayerColor::create(Utils::getColorAlpha("favoriteUserColor"));
 		highlight->setContentSize({340, this->m_height});
 		highlight->setID(FAVORITE_USER_HIGHLIGHT);
 		this->m_mainLayer->addChild(highlight);
 		highlight->setZOrder(-10);
+		highlight->setVisible(!m_fields->isHidden);
 	}
 };
