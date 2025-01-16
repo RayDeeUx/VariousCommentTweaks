@@ -21,6 +21,7 @@ namespace Utils {
 		return std::find(span.begin(), span.end(), value) != span.end();
 	}
 
-	void addIgnoredUser(int accountID, std::string username);
+	bool addIgnoredUser(int accountID, std::string username);
+	bool addFavoriteUser(int accountID, std::string username);
 	bool updateLists(Manager* manager = Manager::getSharedInstance());
 }

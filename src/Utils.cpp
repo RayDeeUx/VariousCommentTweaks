@@ -25,13 +25,36 @@ namespace Utils {
 
 	std::string getModVersion(Mod* mod) { return mod->getVersion().toNonVString(); }
 
-	void addIgnoredUser(int accountID, std::string username) {
+	bool addIgnoredUser(int accountID, std::string username) {
+		Manager* manager = Manager::getSharedInstance();
+		if (contains<int>(manager->favoriteUsers, accountID)) {
+			log::info("tried to ignore user: {} (username: {}) but they are already favorited", accountID, username);
+			FLAlertLayer::create("Oops!", fmt::format("{} is already in your list of <cy>favorite</c> users.\nRevisit your mod settings if you believe this is a mistake.\n--VariousCommentTweaks", username), "Close")->show();
+			return false;
+		}
 		log::info("ignoring user: {} (username: {})", accountID, username);
-		Manager::getSharedInstance()->ignoredUsers.push_back(accountID);
+		manager->ignoredUsers.push_back(accountID);
 		std::ofstream output;
 		output.open((Mod::get()->getConfigDir() / "ignoredUsers.txt"), std::ios_base::app);
 		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
 		output.close();
+		return true;
+	}
+
+	bool addFavoriteUser(int accountID, std::string username) {
+		Manager* manager = Manager::getSharedInstance();
+		if (contains<int>(manager->ignoredUsers, accountID)) {
+			log::info("tried to favorite user: {} (username: {}) but they are already ignored", accountID, username);
+			FLAlertLayer::create("Oops!", fmt::format("{} is already in your list of <cr>ignored</c> users.\nRevisit your mod settings if you believe this is a mistake.\n--VariousCommentTweaks", username), "Close")->show();
+			return false;
+		}
+		log::info("ignoring user: {} (username: {})", accountID, username);
+		manager->favoriteUsers.push_back(accountID);
+		std::ofstream output;
+		output.open((Mod::get()->getConfigDir() / "favoriteUsers.txt"), std::ios_base::app);
+		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
+		output.close();
+		return true;
 	}
 
 	bool updateLists(Manager* manager) {
