@@ -302,9 +302,22 @@ class $modify(MyCommentCell, CommentCell) {
 	static void hideButtons(CCNode* node, const bool hideIgnoreAndFavoriteButtons = true) {
 		if (!Utils::modEnabled() || !node) return;
 		log::info("tag: {}", node->getTag());
-		if (CCNode* hideToggler = node->getChildByID("hidden-toggler"_spr); node->getTag() != 1) hideToggler->setVisible(false);
-		if (CCNode* ignoreButton = node->getChildByID("ignore-button"_spr); hideIgnoreAndFavoriteButtons) ignoreButton->setVisible(false);
-		if (CCNode* favoriteButton = node->getChildByID("favorite-button"_spr); hideIgnoreAndFavoriteButtons) favoriteButton->setVisible(false);
+		if (Utils::getBool("toggleCommentVisibility")) {
+			if (CCNode* hideToggler = node->getChildByIDRecursive("hidden-toggler"_spr); node->getTag() != 1) {
+				hideToggler->setVisible(false);
+			}
+		}
+		if (Utils::getBool("favoriteUsers")) {
+			if (CCNode* ignoreButton = node->getChildByIDRecursive("ignore-button"_spr); hideIgnoreAndFavoriteButtons) {
+				ignoreButton->setVisible(false);
+			}
+		}
+		if (Utils::getBool("ignorePeople")) {
+			if (CCNode *favoriteButton = node->getChildByIDRecursive("favorite-button"_spr);
+				hideIgnoreAndFavoriteButtons) {
+				favoriteButton->setVisible(false);
+			}
+		}
 		node->updateLayout();
 	}
 	void recolorCellBackground() {
