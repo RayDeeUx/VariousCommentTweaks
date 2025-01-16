@@ -86,7 +86,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("largerButtons")) menu->setScale(1.2f); else menu->setScale(1.0f);
 		this->m_mainLayer->addChild(menu);
 
-		if (Utils::getBool("ignorePeople") && Utils::contains<int>(manager->ignoredUsers, fields->authorAccountID)) {
+		if (Utils::getBool("ignorePeople") && Utils::contains(manager->ignoredUsers, fields->authorAccountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 			MyCommentCell::hideButtons(menu);
 		} else if (Utils::getBool("personalFilter") && manager->ownUsername != comment->m_userName && string::containsAny(string::toLower(fields->originalCommentText), manager->dislikedWords)) {
