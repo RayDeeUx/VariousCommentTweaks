@@ -17,7 +17,7 @@ namespace Utils {
 	Mod* getMod(const std::string& modID);
 	std::string getModVersion(Mod* mod);
 
-	template<typename T> bool contains(std::span<T> span, T const& value) {
+	template<typename T> bool contains(std::span<T> const& span, T const& value) {
 		return std::find(span.begin(), span.end(), value) != span.end();
 	}
 
