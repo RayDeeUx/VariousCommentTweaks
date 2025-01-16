@@ -130,16 +130,7 @@ class $modify(MyCommentCell, CommentCell) {
 			}
 		}
 
-		const auto lbe = Utils::getMod("raydeeux.likebaitexterminator");
-		if (Utils::isModLoaded("raydeeux.likebaitexterminator") && lbe) {
-			if (lbe->getSettingValue<bool>("enabled")) {
-				comment->m_likeCount = fields->originalLikeCount;
-				if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText")) {
-					comment->m_commentString = fields->originalCommentText;
-					MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
-				}
-			}
-		}
+		MyCommentCell::likeBaitExterminator(comment, isOwnComment);
 
 		if (isLargeComment || !commentTextLabel || (!isLargeComment && fields->originalCommentText.length() < 31)) return;
 		if (menu->getChildrenCount() < 1) return menu->removeMeAndCleanup();
@@ -329,5 +320,15 @@ class $modify(MyCommentCell, CommentCell) {
 		this->m_mainLayer->addChild(highlight);
 		highlight->setZOrder(-10);
 		highlight->setVisible(!m_fields->isHidden);
+	}
+	void likeBaitExterminator(GJComment* comment, const bool isOwnComment) {
+		const auto fields = m_fields.self();
+		if (!Utils::isModLoaded("raydeeux.likebaitexterminator")) return;
+		const auto lbe = Utils::getMod("raydeeux.likebaitexterminator");
+		if (!lbe->getSettingValue<bool>("enabled")) return;
+		comment->m_likeCount = fields->originalLikeCount;
+		if (!isOwnComment || comment->m_commentString != lbe->getSettingValue<std::string>("replacementText")) return;
+		comment->m_commentString = fields->originalCommentText;
+		MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
 	}
 };
