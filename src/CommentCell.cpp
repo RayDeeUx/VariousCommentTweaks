@@ -232,8 +232,11 @@ class $modify(MyCommentCell, CommentCell) {
 		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !m_mainLayer) return;
 		if (m_fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't favorite yourself!")->show();
 		if (!Utils::addFavoriteUser(m_fields->authorAccountID, m_fields->authorUsername)) return;
+		const auto menu = this->m_mainLayer->getChildByID(MENU_ID);
+		menu->setTag(1);
 		MyCommentCell::recolorCellBackground();
-		MyCommentCell::hideButtons(this->m_mainLayer->getChildByID(MENU_ID));
+		MyCommentCell::hideButtons(menu);
+		menu->setTag(0);
 		Notification::create(fmt::format("{} is now a favorite user!", m_fields->authorUsername))->show();
 	}
 	void passiveHidingComment(const std::string_view reason) {
@@ -259,6 +262,9 @@ class $modify(MyCommentCell, CommentCell) {
 			if (Utils::getBool("blendingComments")) fakeLabel->setBlendFunc({GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA});
 			this->m_mainLayer->addChild(fakeLabel);
 		}
+
+		if (const auto highlight = this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT))
+			highlight->setVisible(isHiddenBefore);
 
 		if (this->m_height == 36) {
 			const auto label = static_cast<CCLabelBMFont*>(this->getChildByIDRecursive("comment-text-label"));
@@ -295,6 +301,7 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	static void hideButtons(CCNode* node, const bool hideIgnoreAndFavoriteButtons = true) {
 		if (!Utils::modEnabled() || !node) return;
+		log::info("tag: {}", node->getTag());
 		if (CCNode* hideToggler = node->getChildByID("hidden-toggler"_spr); node->getTag() != 1) hideToggler->setVisible(false);
 		if (CCNode* ignoreButton = node->getChildByID("ignore-button"_spr); hideIgnoreAndFavoriteButtons) ignoreButton->setVisible(false);
 		if (CCNode* favoriteButton = node->getChildByID("favorite-button"_spr); hideIgnoreAndFavoriteButtons) favoriteButton->setVisible(false);

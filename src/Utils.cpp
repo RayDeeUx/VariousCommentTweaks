@@ -53,7 +53,7 @@ namespace Utils {
 			Notification::create("{} is already a favorite user!")->show();
 			return false;
 		}
-		log::info("ignoring user: {} (username: {})", accountID, username);
+		log::info("favoriting user: {} (username: {})", accountID, username);
 		manager->favoriteUsers.push_back(accountID);
 		std::ofstream output;
 		output.open((Mod::get()->getConfigDir() / "favoriteUsers.txt"), std::ios_base::app);
