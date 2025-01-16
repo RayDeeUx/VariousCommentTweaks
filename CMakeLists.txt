@@ -8,6 +8,8 @@ project(VariousCommentTweaks VERSION 1.0.0)
 
 # Set up the mod binary
 add_library(${PROJECT_NAME} SHARED
+    src/Simpleton.cpp
+    src/Simpleton.hpp
     src/Manager.cpp
     src/Manager.hpp
     src/Utils.cpp

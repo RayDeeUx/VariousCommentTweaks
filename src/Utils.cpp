@@ -62,10 +62,12 @@ namespace Utils {
 		return true;
 	}
 
-	bool updateLists(Manager* manager) {
+	bool updateLists(Manager* manager, Simpleton* simpleton) {
 		manager->dislikedWords.clear();
 		manager->ignoredUsers.clear();
 		manager->favoriteUsers.clear();
+		manager->blocked.clear();
+		manager->friends.clear();
 		auto configDir = Mod::get()->getConfigDir();
 		auto pathDislikedWords = (configDir / "dislikedWords.txt");
 		auto pathIgnoredUsers = (configDir / "ignoredUsers.txt");
@@ -138,6 +140,15 @@ namespace Utils {
 					manager->favoriteUsers.push_back(favoriteUserID);
 			}
 		}
+		GameLevelManager* glm = GameLevelManager::get();
+		if (!glm) {
+			log::info("gamelevelmanager not found, oof!");
+			return true;
+		}
+		glm->m_userListDelegate = simpleton;
+		glm->getUserList(UserListType::Friends);
+		glm->m_userListDelegate = simpleton;
+		glm->getUserList(UserListType::Blocked);
 		return true;
 	}
 }

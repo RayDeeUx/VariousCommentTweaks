@@ -79,6 +79,11 @@
 			"type": "bool",
 			"default": true
 		},
+		"blockedAreIgnoredPeople": {
+			"name": "Treat Blocked Users As Ignored People",
+			"type": "bool",
+			"default": true
+		},
 		"personalFilter": {
 			"name": "Personal Phrases Filter",
 			"description": "Hide comments containing <co>words or phrases you dislike</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cg>add</c> <cy>or</c> <cr>remove</c> <cy>a word/phrase from your personal phrase filter, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>refresh your lists.</c>\n\n<cy>This is a purely cosmetic change, and</c> <co>does not apply to your own comments.</c>",

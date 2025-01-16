@@ -1,4 +1,5 @@
 #pragma once
+#include "Simpleton.hpp"
 #include "Manager.hpp"
 
 using namespace geode::prelude;
@@ -23,5 +24,5 @@ namespace Utils {
 
 	bool addIgnoredUser(int accountID, std::string username);
 	bool addFavoriteUser(int accountID, std::string username);
-	bool updateLists(Manager* manager = Manager::getSharedInstance());
+	bool updateLists(Manager* manager = Manager::getSharedInstance(), Simpleton* simpleton = Simpleton::get());
 }

@@ -16,6 +16,8 @@ public:
 	std::vector<std::string> dislikedWords;
 	std::vector<int> ignoredUsers;
 	std::vector<int> favoriteUsers;
+	std::vector<int> blocked;
+	std::vector<int> friends;
 
 	std::string ownUsername;
 	std::string urlEncoded;
