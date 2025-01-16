@@ -7,9 +7,9 @@
 	},
 	"id": "raydeeux.variouscommenttweaks",
 	"name": "VariousCommentTweaks",
-	"version": "v1.0.1",
+	"version": "v1.0.2",
 	"developer": "RayDeeUx",
-	"description": "Read the mod name.",
+	"description": "Read the mod name. No, seriously, read it.",
 	"repository": "https://github.com/RayDeeUx/VariousCommentTweaks",
 	"settings": {
 		"enabled": {

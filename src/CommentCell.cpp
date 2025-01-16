@@ -20,11 +20,12 @@ class $modify(MyCommentCell, CommentCell) {
 		bool isHidden = false;
 	};
 	void loadFromComment(GJComment* comment) {
-		m_fields->originalCommentText = comment->m_commentString; // store comment text early before other mods edit the member variable
+		const auto fields = m_fields.self();
+		fields->originalCommentText = comment->m_commentString; // store comment text early before other mods edit the member variable
 
 		CommentCell::loadFromComment(comment);
-		m_fields->authorAccountID = comment->m_accountID;
-		m_fields->authorUsername = comment->m_userName;
+		fields->authorAccountID = comment->m_accountID;
+		fields->authorUsername = comment->m_userName;
 
 		if (!Utils::modEnabled() || comment->m_commentDeleted || !m_mainLayer) return;
 
@@ -85,16 +86,16 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("largerButtons")) menu->setScale(1.2f); else menu->setScale(1.0f);
 		this->m_mainLayer->addChild(menu);
 
-		if (Utils::getBool("ignorePeople") && manager->ignoredUsers.contains(comment->m_accountID)) {
+		if (Utils::getBool("ignorePeople") && Utils::contains(manager->ignoredUsers, fields->authorAccountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 			MyCommentCell::hideButtons(menu);
-		} else if (Utils::getBool("personalFilter") && manager->ownUsername != comment->m_userName && string::containsAny(string::toLower(m_fields->originalCommentText), manager->dislikedWords)) {
+		} else if (Utils::getBool("personalFilter") && manager->ownUsername != comment->m_userName && string::containsAny(string::toLower(fields->originalCommentText), manager->dislikedWords)) {
 			MyCommentCell::passiveHidingComment("Comment contains word(s) you dislike");
 			MyCommentCell::hideButtons(menu, false);
 		} else if (Utils::getBool("hideRoleplay")) { // roleplay filter (inaccurate?)
 			int numAsterisks = 0;
 			int numVerbs = 0;
-			for (const std::string& word : string::split(string::toLower(m_fields->originalCommentText), " ")) {
+			for (const std::string& word : string::split(string::toLower(fields->originalCommentText), " ")) {
 				if (utils::string::startsWith(word, "*")) numAsterisks += 1;
 				if (numAsterisks % 2 == 0) continue;
 				if (utils::string::endsWith(word, "ing") || utils::string::endsWith(word, "ed") || utils::string::endsWith(word, "s") || utils::string::endsWith(word, "es") || utils::string::endsWith(word, "ly"))
@@ -111,7 +112,7 @@ class $modify(MyCommentCell, CommentCell) {
 			}
 		}
 
-		if (isLargeComment || !commentTextLabel || (!isLargeComment && m_fields->originalCommentText.length() < 31)) return;
+		if (isLargeComment || !commentTextLabel || (!isLargeComment && fields->originalCommentText.length() < 31)) return;
 		if (menu->getChildrenCount() < 1) return menu->removeMeAndCleanup();
 
 		const float scale = commentTextLabel->getScale();

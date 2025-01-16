@@ -2,6 +2,7 @@
 Things you could never do with comments before:
 - Copy/pasting comment shortcuts!
 - Toggling comment visibility!
+- Compact profile posts/comments!
 - Filtering roleplay! <cl>(Suggested by/with help from [jarvisdevil](https://github.com/jarvisdevlin).)</c>
 - Ignoring people! <cy>(See text file in mod's config directory after installing.)</c>
 - Personal word/phrase filters! <cy>(See text file in mod's config directory after installing.)</c>

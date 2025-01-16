@@ -25,9 +25,13 @@ namespace Utils {
 
 	std::string getModVersion(Mod* mod) { return mod->getVersion().toNonVString(); }
 
+	template<class T> bool contains(std::vector<T> vector, T element) {
+		return std::ranges::find(vector.begin(), vector.end(), element) != vector.end();
+	}
+
 	void addIgnoredUser(int accountID, std::string username) {
 		log::info("ignoring user: {} (username: {})", accountID, username);
-		Manager::getSharedInstance()->ignoredUsers.insert(accountID);
+		Manager::getSharedInstance()->ignoredUsers.push_back(accountID);
 		std::ofstream output;
 		output.open((Mod::get()->getConfigDir() / "ignoredUsers.txt"), std::ios_base::app);
 		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
@@ -80,7 +84,7 @@ namespace Utils {
 				if (ignoredUserStringModified.ends_with(" [VCT] #"))
 					ignoredUserStringModified = ignoredUserStringModified.substr(0, ignoredUserStringModified.find(" # [VCT] Username: "));
 				int ignoredUserID = utils::numFromString<int>(ignoredUserStringModified).unwrapOr(-2);
-				if (ignoredUserID > 0 && ignoredUserID != 71) manager->ignoredUsers.insert(ignoredUserID);
+				if (ignoredUserID > 0 && ignoredUserID != 71) manager->ignoredUsers.push_back(ignoredUserID);
 			}
 		}
 		return true;

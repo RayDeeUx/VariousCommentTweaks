@@ -1,4 +1,6 @@
 # VariousCommentTweaks Changelog
+## v1.0.2
+- Refactor how ignored users are fetched to address potential memory/lag concerns.
 ## v1.0.1
 - Added a shortcut to refresh ignored users/filtered phrases.
 - Rename a few config settings to color more words and make it clearer on how to adjust ignored users/filtered phrases.

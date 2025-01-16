@@ -14,7 +14,7 @@ public:
 	bool calledAlready = false;
 
 	std::vector<std::string> dislikedWords;
-	std::unordered_set<int> ignoredUsers;
+	std::vector<int> ignoredUsers;
 
 	std::string ownUsername;
 	std::string urlEncoded;
