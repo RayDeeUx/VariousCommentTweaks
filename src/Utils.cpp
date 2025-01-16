@@ -25,10 +25,6 @@ namespace Utils {
 
 	std::string getModVersion(Mod* mod) { return mod->getVersion().toNonVString(); }
 
-	bool contains(std::vector<int> const& span, int const& value) {
-		return std::ranges::find(span.begin(), span.end(), value) != span.end();
-	}
-
 	void addIgnoredUser(int accountID, std::string username) {
 		log::info("ignoring user: {} (username: {})", accountID, username);
 		Manager::getSharedInstance()->ignoredUsers.push_back(accountID);

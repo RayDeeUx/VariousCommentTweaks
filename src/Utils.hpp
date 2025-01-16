@@ -17,7 +17,9 @@ namespace Utils {
 	Mod* getMod(const std::string& modID);
 	std::string getModVersion(Mod* mod);
 
-	bool contains(std::vector<int> const& span, int const& value);
+	template<typename T> bool contains(std::span<T> span, T const& value) {
+		return std::find(span.begin(), span.end(), value) != span.end();
+	}
 
 	void addIgnoredUser(int accountID, std::string username);
 	bool updateLists(Manager* manager = Manager::getSharedInstance());
