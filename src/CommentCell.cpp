@@ -99,7 +99,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		menu->setTag(0);
 
-		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID)) {
+		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID) && !manager->doNotHighlight) {
 			menu->setTag(1);
 			MyCommentCell::recolorCellBackground();
 			MyCommentCell::hideButtons(menu);
@@ -308,7 +308,7 @@ class $modify(MyCommentCell, CommentCell) {
 		node->updateLayout();
 	}
 	void recolorCellBackground() {
-		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT)) return;
+		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT) || Manager::getSharedInstance()->doNotHighlight) return;
 		CCLayerColor* highlight = CCLayerColor::create(Utils::getColorAlpha("favoriteUserColor"));
 		highlight->setContentSize({340, this->m_height});
 		highlight->setID(FAVORITE_USER_HIGHLIGHT);

@@ -65,8 +65,9 @@
 		},
 		"friendsAreFavoriteUsers": {
 			"name": "Include Friends List in Favorite Users",
+			"description": "<cy>This will make additional requests to the GD servers. Be careful if you toggle this!</c>",
 			"type": "bool",
-			"default": true
+			"default": false
 		},
 		"favoriteUserColor": {
 			"name": "Favorite User Highlight Color",
@@ -81,8 +82,9 @@
 		},
 		"blockedAreIgnoredPeople": {
 			"name": "Treat Blocked Users As Ignored People",
+			"description":  "<cy>This will make additional requests to the GD servers. Be careful if you toggle this!</c>",
 			"type": "bool",
-			"default": true
+			"default": false
 		},
 		"personalFilter": {
 			"name": "Personal Phrases Filter",

@@ -140,15 +140,20 @@ namespace Utils {
 					manager->favoriteUsers.push_back(favoriteUserID);
 			}
 		}
+		if (!Utils::getBool("friendsAreFavoriteUsers") && !Utils::getBool("blockedAreIgnoredPeople")) return true;
 		GameLevelManager* glm = GameLevelManager::get();
 		if (!glm) {
 			log::info("gamelevelmanager not found, oof!");
 			return true;
 		}
-		glm->m_userListDelegate = simpleton;
-		glm->getUserList(UserListType::Friends);
-		glm->m_userListDelegate = simpleton;
-		glm->getUserList(UserListType::Blocked);
+		if (Utils::getBool("friendsAreFavoriteUsers")) {
+			glm->m_userListDelegate = simpleton;
+			glm->getUserList(UserListType::Friends);
+		}
+		if (Utils::getBool("blockedAreIgnoredPeople")) {
+			glm->m_userListDelegate = simpleton;
+			glm->getUserList(UserListType::Blocked);
+		}
 		return true;
 	}
 }

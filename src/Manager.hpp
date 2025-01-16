@@ -22,6 +22,8 @@ public:
 	std::string ownUsername;
 	std::string urlEncoded;
 
+	bool doNotHighlight = false;
+
 	// adapted from tastyforreal
 	std::unordered_map<std::string, std::string> languages = {
 		{"Afrikaans", "af"}, {"Twi", "ak"}, {"Amharic", "am"}, {"Arabic", "ar"}, {"Assamese", "as"},
