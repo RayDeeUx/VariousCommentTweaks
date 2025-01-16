@@ -25,8 +25,8 @@ namespace Utils {
 
 	std::string getModVersion(Mod* mod) { return mod->getVersion().toNonVString(); }
 
-	template<class T> bool contains(std::vector<T> vector, T element) {
-		return std::ranges::find(vector.begin(), vector.end(), element) != vector.end();
+	template <typename T> bool contains(std::span<T> span, T const& value) {
+		return std::find(span.begin(), span.end(), value) != span.end();
 	}
 
 	void addIgnoredUser(int accountID, std::string username) {
