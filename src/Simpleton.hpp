@@ -16,9 +16,13 @@ public:
 	void getUserListFinished(cocos2d::CCArray* p0, UserListType p1);
 	void getUserListFailed(UserListType p0, GJErrorCode p1);
 
+	// while this is valid destructor code it will never run
+	// ty dankmeme01
+	/*
 	~Simpleton() {
 		if (GameLevelManager::get()->m_userListDelegate == this)
 			GameLevelManager::get()->m_userListDelegate = nullptr;
 	}
+	*/
 
 };

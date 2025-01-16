@@ -48,7 +48,7 @@ public:
 			if (Mod* lbe = Utils::getMod("raydeeux.likebaitexterminator")) return openSettingsPopup(lbe);
 			return FLAlertLayer::create("Hey there!", "LikebaitExterminator isn't loaded right now. You can install it from the mod index on your own if you'd like.", "Close")->show();
 		}
-		if (m_title == "Refresh Personal Phrases Filter + Ignored Users") {
+		if (m_title == "Refresh Personal Phrases Filter + Favorite/Ignored Users") {
 			if (Utils::updateLists()) return FLAlertLayer::create("Success!", "You've successfully <cg>refreshed</c> your <co>personal phrases filter</c> and <co>ignored users list</c>.", "Close")->show();
 			return FLAlertLayer::create("Hmm...", "Something went wrong when trying to <cg>refresh</c> your <co>personal phrases filter</c> and <co>ignored users list</c>.", "Oof...")->show();
 		}

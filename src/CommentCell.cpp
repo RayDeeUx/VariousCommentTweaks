@@ -99,7 +99,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		menu->setTag(0);
 
-		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID) && !manager->doNotHighlight) {
+		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID)) {
 			menu->setTag(1);
 			MyCommentCell::recolorCellBackground();
 			MyCommentCell::hideButtons(menu);
