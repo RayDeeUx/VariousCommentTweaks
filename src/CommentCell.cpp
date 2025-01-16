@@ -301,7 +301,6 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	static void hideButtons(CCNode* node, const bool hideIgnoreAndFavoriteButtons = true) {
 		if (!Utils::modEnabled() || !node) return;
-		log::info("tag: {}", node->getTag());
 		if (Utils::getBool("toggleCommentVisibility")) {
 			if (CCNode* hideToggler = node->getChildByIDRecursive("hidden-toggler"_spr); node->getTag() != 1) {
 				hideToggler->setVisible(false);
@@ -313,8 +312,7 @@ class $modify(MyCommentCell, CommentCell) {
 			}
 		}
 		if (Utils::getBool("ignorePeople")) {
-			if (CCNode *favoriteButton = node->getChildByIDRecursive("favorite-button"_spr);
-				hideIgnoreAndFavoriteButtons) {
+			if (CCNode *favoriteButton = node->getChildByIDRecursive("favorite-button"_spr); hideIgnoreAndFavoriteButtons) {
 				favoriteButton->setVisible(false);
 			}
 		}

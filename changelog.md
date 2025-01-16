@@ -1,4 +1,7 @@
 # VariousCommentTweaks Changelog
+## v1.0.3
+- Add <cl>favoriting users</c> as a feature, <cl>suggested by [JollySpider](https://www.youtube.com/@JollySpider/)</c>.
+- Fix a few potential crashes. Apparently CommentCells are a pain to deal with.
 ## v1.0.2
 - Refactor how ignored users are fetched to address potential memory/lag concerns.
 ## v1.0.1
