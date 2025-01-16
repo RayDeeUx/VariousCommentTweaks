@@ -1,4 +1,7 @@
 # VariousCommentTweaks Changelog
+## v1.0.4
+- Fix one unexpected crash.
+- Removed Mr. Bean from the premises.
 ## v1.0.3
 - Add <cl>favoriting users</c> as a feature, <cl>suggested by [JollySpider](https://www.youtube.com/@JollySpider/)</c>.
 - Fix a few potential crashes. Apparently CommentCells are a pain to deal with.

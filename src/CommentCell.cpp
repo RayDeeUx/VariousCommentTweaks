@@ -130,11 +130,14 @@ class $modify(MyCommentCell, CommentCell) {
 			}
 		}
 
-		if (const auto lbe = Utils::getMod("raydeeux.likebaitexterminator"); lbe->getSettingValue<bool>("enabled")) {
-			comment->m_likeCount = fields->originalLikeCount;
-			if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText")) {
-				comment->m_commentString = fields->originalCommentText;
-				MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
+		const auto lbe = Utils::getMod("raydeeux.likebaitexterminator");
+		if (Utils::isModLoaded("raydeeux.likebaitexterminator") && lbe) {
+			if (lbe->getSettingValue<bool>("enabled")) {
+				comment->m_likeCount = fields->originalLikeCount;
+				if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText")) {
+					comment->m_commentString = fields->originalCommentText;
+					MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
+				}
 			}
 		}
 
