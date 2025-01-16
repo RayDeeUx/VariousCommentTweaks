@@ -5,6 +5,7 @@
 
 #define MENU_ID "the-menu-with-buttons-that-im-too-lazy-to-move-into-main-menu-sorry"_spr
 #define REPLACEMENT_ID "hidden-comment-replacement-label"_spr
+#define FAVORITE_USER_HIGHLIGHT "favorite-user-highlight"_spr
 #define formattedReason fmt::format("[{}]", reason).c_str()
 
 using namespace geode::prelude;
@@ -41,7 +42,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("blendingComments")) MyCommentCell::applyBlendingToComment();
 
 		const bool isLargeComment = this->m_height != 36;
-		const bool isOwnComment = comment->m_userName != Manager::getSharedInstance()->ownUsername;
+		const bool isOwnComment = comment->m_userName == Manager::getSharedInstance()->ownUsername;
 		const float spriteScale = isLargeComment ? 0.95f : 1.0f;
 		const float menuContentWidth = !isLargeComment ? 35.f : 45.f;
 
@@ -64,7 +65,7 @@ class $modify(MyCommentCell, CommentCell) {
 
 		CircleButtonSprite* favoriteButtonSprite = CircleButtonSprite::createWithSpriteFrameName("favorite.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
 		CCMenuItemSpriteExtra* favoriteButton = CCMenuItemSpriteExtra::create(favoriteButtonSprite, this, menu_selector(MyCommentCell::onVCTFavorite));
-		ignoreButton->setID("favorite-button"_spr);
+		favoriteButton->setID("favorite-button"_spr);
 
 		CircleButtonSprite* translateButtonSprite = CircleButtonSprite::createWithSpriteFrameName("translate.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
 		CCMenuItemSpriteExtra* translateButton = CCMenuItemSpriteExtra::create(translateButtonSprite, this, menu_selector(MyCommentCell::onVCTTrans));
@@ -77,7 +78,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("toggleCommentVisibility")) menu->addChild(markAsHiddenToggler);
 		if (!isOwnComment) {
 			if (Utils::getBool("ignorePeople")) menu->addChild(ignoreButton);
-			if (Utils::getBool("favoritePeople")) menu->addChild(favoriteButton);
+			if (Utils::getBool("favoriteUsers")) menu->addChild(favoriteButton);
 		}
 		if (Utils::getBool("translateComments")) menu->addChild(translateButton);
 
@@ -96,7 +97,14 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("largerButtons")) menu->setScale(1.2f); else menu->setScale(1.0f);
 		this->m_mainLayer->addChild(menu);
 
-		if (Utils::getBool("ignorePeople") && Utils::contains<int>(manager->ignoredUsers, fields->authorAccountID)) {
+		menu->setTag(0);
+
+		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID)) {
+			menu->setTag(1);
+			MyCommentCell::recolorCellBackground();
+			MyCommentCell::hideButtons(menu);
+			menu->setTag(0);
+		} else if (Utils::getBool("ignorePeople") && Utils::contains<int>(manager->ignoredUsers, fields->authorAccountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 			MyCommentCell::hideButtons(menu);
 		} else if (Utils::getBool("personalFilter") && manager->ownUsername != comment->m_userName && string::containsAny(string::toLower(fields->originalCommentText), manager->dislikedWords)) {
@@ -124,8 +132,10 @@ class $modify(MyCommentCell, CommentCell) {
 
 		if (const auto lbe = Utils::getMod("raydeeux.likebaitexterminator"); lbe->getSettingValue<bool>("enabled")) {
 			comment->m_likeCount = fields->originalLikeCount;
-			if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText"))
+			if (isOwnComment && comment->m_commentString == lbe->getSettingValue<std::string>("replacementText")) {
 				comment->m_commentString = fields->originalCommentText;
+				MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
+			}
 		}
 
 		if (isLargeComment || !commentTextLabel || (!isLargeComment && fields->originalCommentText.length() < 31)) return;
@@ -219,7 +229,7 @@ class $modify(MyCommentCell, CommentCell) {
 		Notification::create(fmt::format("{} was ignored!", m_fields->authorUsername))->show();
 	}
 	void onVCTFavorite(CCObject*) {
-		if (!Utils::modEnabled() || !Utils::getBool("favoritePeople") || !m_mainLayer) return;
+		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !m_mainLayer) return;
 		if (m_fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't favorite yourself!")->show();
 		if (!Utils::addFavoriteUser(m_fields->authorAccountID, m_fields->authorUsername)) return;
 		MyCommentCell::recolorCellBackground();
@@ -285,15 +295,17 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	static void hideButtons(CCNode* node, const bool hideIgnoreAndFavoriteButtons = true) {
 		if (!Utils::modEnabled() || !node) return;
-		if (CCNode* hideToggler = node->getChildByID("hidden-toggler"_spr)) hideToggler->setVisible(false);
+		if (CCNode* hideToggler = node->getChildByID("hidden-toggler"_spr); node->getTag() != 1) hideToggler->setVisible(false);
 		if (CCNode* ignoreButton = node->getChildByID("ignore-button"_spr); hideIgnoreAndFavoriteButtons) ignoreButton->setVisible(false);
 		if (CCNode* favoriteButton = node->getChildByID("favorite-button"_spr); hideIgnoreAndFavoriteButtons) favoriteButton->setVisible(false);
 		node->updateLayout();
 	}
-	void recolorCellBackground() const {
-		if (!Utils::modEnabled() || !Utils::getBool("favoritePeople") || this->m_backgroundLayer) return;
-		const auto [r, g, b, a] = Utils::getColorAlpha("favoriteUserColor");
-		this->m_backgroundLayer->setColor({r, g, b});
-		this->m_backgroundLayer->setOpacity(a);
+	void recolorCellBackground() {
+		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer) return;
+		CCLayerColor* highlight = CCLayerColor::create(Utils::getColorAlpha("favoriteUserColor"));
+		highlight->setContentSize({340, this->m_height});
+		highlight->setID(FAVORITE_USER_HIGHLIGHT);
+		this->m_mainLayer->addChild(highlight);
+		highlight->setZOrder(-10);
 	}
 };

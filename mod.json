@@ -57,13 +57,13 @@
 			"type": "bool",
 			"default": true
 		},
-		"favoritePeople": {
+		"favoriteUsers": {
 			"name": "Highlight Comments From Favorite Users",
 			"description": "<cl>Original idea by JollySpider.</c>\n\nHighlight comments from <co>your favorite users</c>, based on <cl>text files inside this mod's config directory</c>.\n<cy>To</c> <cr>remove</c> <cy>someone from your favorite users, visit</c> <cl>this mod's config directory</c><cy>, edit the relevant text file, and</c> <cp>refresh your lists.</c>\n\n<cy>This is a purely cosmetic change. Adding a favorite user does not add them to</c> <cl>your in-game friends list</c><cy>, even though the mod can automatically include your friends as favorite users if you'd like.</c>",
 			"type": "bool",
 			"default": true
 		},
-		"friendsAreFavoritePeople": {
+		"friendsAreFavoriteUsers": {
 			"name": "Include Friends List in Favorite Users",
 			"type": "bool",
 			"default": true
