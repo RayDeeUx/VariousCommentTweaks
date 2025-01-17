@@ -64,7 +64,7 @@ class $modify(MyCommentCell, CommentCell) {
 		ignoreButton->setID("ignore-button"_spr);
 
 		CCSprite* favoriteButtonSprite = CCSprite::createWithSpriteFrameName("favorite.png"_spr);
-		favoriteButtonSprite->setScale(spriteScale * 0.95f);
+		favoriteButtonSprite->setScale(0.9f);
 		CCMenuItemSpriteExtra* favoriteButton = CCMenuItemSpriteExtra::create(favoriteButtonSprite, this, menu_selector(MyCommentCell::onVCTFavorite));
 		favoriteButton->setID("favorite-button"_spr);
 
