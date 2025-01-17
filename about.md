@@ -9,4 +9,6 @@ Things you could never do with comments before:
 - Personal word/phrase filters! <cy>(See text file in mod's config directory after installing.)</c>
 - Translate comments between languages in your web browser! <cl>(Hello, TastyForReal! o7.)</c>
 
+Button sprites from v1.1.0 and onward by [Brift](https://twitter.com/BriftXD).
+
 This [Geode mod](https://geode-sdk.org) is licensed under LGPLv2.

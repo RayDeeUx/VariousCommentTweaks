@@ -1,6 +1,7 @@
 # VariousCommentTweaks Changelog
-## v[REPLACE BEFORE SHIPPING TO PROD]
-- Make controller glyphs in the Translation menu invisible.
+## v1.1.0
+- New button sprites by [Brift](https://twitter.com/BriftXD)!
+- Make controller glyphs in the Translation menu invisible. Thanks to CherryChip for reporting!
 ## v1.0.4
 - Fix one unexpected crash.
 - Removed Mr. Bean from the premises.

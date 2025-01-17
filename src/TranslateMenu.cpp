@@ -59,7 +59,7 @@ bool TranslateMenu::init(const std::string& text) {
 	ButtonSprite* deeplTranslate = ButtonSprite::create("    DeepL", "goldFont.fnt", "GJ_button_01.png", 0.8f);
 	CCMenuItemSpriteExtra* deeplTranslateButton = CCMenuItemSpriteExtra::create(deeplTranslate, this, menu_selector(TranslateMenu::onDeepLTranslate));
 	CCSprite* deeplTranslateLogo = CCSprite::createWithSpriteFrameName("deeplTranslate.png"_spr);
-	deeplTranslateLogo->setScale(1.3f);
+	deeplTranslateLogo->setScale(1.8f);
 	deeplTranslateLogo->setID("deepl-translate-logo"_spr);
 	deeplTranslate->addChild(deeplTranslateLogo);
 	deeplTranslateLogo->setPosition({24, 15});
@@ -68,7 +68,7 @@ bool TranslateMenu::init(const std::string& text) {
 	ButtonSprite* boogleTranslate = ButtonSprite::create("    Google", "goldFont.fnt", "GJ_button_01.png", 0.8f);
 	CCMenuItemSpriteExtra* boogleTranslateButton = CCMenuItemSpriteExtra::create(boogleTranslate, this, menu_selector(TranslateMenu::onBoogleTranslate));
 	CCSprite* boogleTranslateLogo = CCSprite::createWithSpriteFrameName("boogleTranslate.png"_spr);
-	boogleTranslateLogo->setScale(1.3f);
+	boogleTranslateLogo->setScale(1.8f);
 	boogleTranslateLogo->setID("boogle-translate-logo"_spr);
 	boogleTranslate->addChild(boogleTranslateLogo);
 	boogleTranslateLogo->setPosition({24, 15});

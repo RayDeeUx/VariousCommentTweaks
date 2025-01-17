@@ -43,31 +43,29 @@ class $modify(MyCommentCell, CommentCell) {
 
 		const bool isLargeComment = this->m_height != 36;
 		const bool isOwnComment = comment->m_userName == Manager::getSharedInstance()->ownUsername;
-		const float spriteScale = isLargeComment ? 0.95f : 1.0f;
+		const float spriteScale = isLargeComment ? 1.1f : 1.2f;
 		const float menuContentWidth = !isLargeComment ? 35.f : 45.f;
 
-		CircleButtonSprite* copyButtonSprite = CircleButtonSprite::createWithSpriteFrameName("copy.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
+		CCSprite* copyButtonSprite = CCSprite::createWithSpriteFrameName("copy.png"_spr);
 		CCMenuItemSpriteExtra* copyStuffButton = CCMenuItemSpriteExtra::create(copyButtonSprite, this, menu_selector(MyCommentCell::onVCTCopy));
 		copyStuffButton->setID("copy-button"_spr);
 
-		CircleButtonSprite* markAsHiddenSprite = CircleButtonSprite::createWithSpriteFrameName("hide.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
-		if (const auto sprite = markAsHiddenSprite->getChildByType<CCSprite>(0)) sprite->setColor({255, 225, 50}); // i don't trust CircleButtonSprite::create()
+		CCSprite* markAsHiddenSprite = CCSprite::createWithSpriteFrameName("show.png"_spr);
 		markAsHiddenSprite->setID("mark-as-hidden"_spr);
-		CircleButtonSprite* markAsVisibleSprite = CircleButtonSprite::createWithSpriteFrameName("hide.png"_spr, spriteScale, CircleBaseColor::Gray, CircleBaseSize::Tiny);
-		if (const auto sprite = markAsVisibleSprite->getChildByType<CCSprite>(0)) sprite->setColor({255, 255, 255}); // i don't trust CircleButtonSprite::create()
+		CCSprite* markAsVisibleSprite = CCSprite::createWithSpriteFrameName("hide.png"_spr);
 		markAsVisibleSprite->setID("mark-as-visible"_spr);
 		CCMenuItemToggler* markAsHiddenToggler = CCMenuItemToggler::create(markAsHiddenSprite, markAsVisibleSprite, this, menu_selector(MyCommentCell::onVCTHide));
 		markAsHiddenToggler->setID("hidden-toggler"_spr);
 
-		CircleButtonSprite* ignoreButtonSprite = CircleButtonSprite::createWithSpriteFrameName("ignore.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
+		CCSprite* ignoreButtonSprite = CCSprite::createWithSpriteFrameName("ignore.png"_spr);
 		CCMenuItemSpriteExtra* ignoreButton = CCMenuItemSpriteExtra::create(ignoreButtonSprite, this, menu_selector(MyCommentCell::onVCTIgnore));
 		ignoreButton->setID("ignore-button"_spr);
 
-		CircleButtonSprite* favoriteButtonSprite = CircleButtonSprite::createWithSpriteFrameName("favorite.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
+		CCSprite* favoriteButtonSprite = CCSprite::createWithSpriteFrameName("favorite.png"_spr);
 		CCMenuItemSpriteExtra* favoriteButton = CCMenuItemSpriteExtra::create(favoriteButtonSprite, this, menu_selector(MyCommentCell::onVCTFavorite));
 		favoriteButton->setID("favorite-button"_spr);
 
-		CircleButtonSprite* translateButtonSprite = CircleButtonSprite::createWithSpriteFrameName("translate.png"_spr, spriteScale, CircleBaseColor::Green, CircleBaseSize::Tiny);
+		CCSprite* translateButtonSprite = CCSprite::createWithSpriteFrameName("translate.png"_spr);
 		CCMenuItemSpriteExtra* translateButton = CCMenuItemSpriteExtra::create(translateButtonSprite, this, menu_selector(MyCommentCell::onVCTTrans));
 		translateButton->setID("translate-button"_spr);
 
@@ -314,12 +312,26 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	void recolorCellBackground() {
 		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT) || Manager::getSharedInstance()->doNotHighlight) return;
+		if (Utils::getBool("gradientHighlight")) {
+			const bool isLargeComment = this->m_height != 36;
+			CCSprite* gradientHighlight = isLargeComment ? CCSprite::createWithSpriteFrameName("largeHighlight.png"_spr) : CCSprite::createWithSpriteFrameName("tinyHighlight.png"_spr);
+			auto [r, g, b, a] = Utils::getColorAlpha("favoriteUserColor");
+			gradientHighlight->setColor({r, g, b});
+			gradientHighlight->setOpacity(a);
+			gradientHighlight->setAnchorPoint({0, 0});
+			gradientHighlight->setBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
+			gradientHighlight->setScale(1.675f);
+			gradientHighlight->setID(FAVORITE_USER_HIGHLIGHT);
+			this->m_mainLayer->addChild(gradientHighlight);
+			gradientHighlight->setZOrder(-10);
+			return gradientHighlight->setVisible(!m_fields->isHidden);
+		}
 		CCLayerColor* highlight = CCLayerColor::create(Utils::getColorAlpha("favoriteUserColor"));
 		highlight->setContentSize({340, this->m_height});
 		highlight->setID(FAVORITE_USER_HIGHLIGHT);
 		this->m_mainLayer->addChild(highlight);
 		highlight->setZOrder(-10);
-		highlight->setVisible(!m_fields->isHidden);
+		return highlight->setVisible(!m_fields->isHidden);
 	}
 	void likeBaitExterminator(GJComment* comment, const bool isOwnComment) {
 		const auto fields = m_fields.self();

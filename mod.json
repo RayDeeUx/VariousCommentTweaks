@@ -7,7 +7,7 @@
 	},
 	"id": "raydeeux.variouscommenttweaks",
 	"name": "VariousCommentTweaks",
-	"version": "v1.0.4",
+	"version": "v1.1.0",
 	"developer": "RayDeeUx",
 	"description": "Read the mod name. No, seriously, read it.",
 	"repository": "https://github.com/RayDeeUx/VariousCommentTweaks",
@@ -73,6 +73,12 @@
 			"name": "Favorite User Highlight Color",
 			"type": "rgba",
 			"default": [240, 211, 42, 150]
+		},
+		"gradientHighlight": {
+			"name": "Use Gradient For Highlighting Favorite Users",
+			"description": "<cl>Gradients by Brift.</c>",
+			"type": "bool",
+			"default": true
 		},
 		"ignorePeople": {
 			"name": "Hide Comments From Ignored People",
