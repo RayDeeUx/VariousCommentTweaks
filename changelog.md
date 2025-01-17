@@ -1,4 +1,6 @@
 # VariousCommentTweaks Changelog
+## v[REPLACE BEFORE SHIPPING TO PROD]
+- Make controller glyphs in the Translation menu invisible.
 ## v1.0.4
 - Fix one unexpected crash.
 - Removed Mr. Bean from the premises.
