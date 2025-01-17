@@ -24,7 +24,27 @@ bool TranslateMenu::init(const std::string& text) {
 	this->setID("TranslateMenu");
 	if (this->m_button1) this->m_button1->getParent()->removeMeAndCleanup(); // the parent is a CCMenuItemSpriteExtra, calm down
 	if (this->m_buttonMenu) this->m_buttonMenu->setContentWidth(390.f);
-	if (this->m_mainLayer) static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
+	if (this->m_mainLayer) {
+		static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
+		if (PlatformToolbox::isControllerConnected()) {
+			if (CCNode* okHint = this->m_mainLayer->getChildByID("controller-ok-hint")) {
+				okHint->setVisible(false);
+				okHint->setScale(0);
+				okHint->setPosition(this->getPosition() * 10);
+				static_cast<CCSprite*>(okHint)->setOpacity(0);
+				static_cast<CCSprite*>(okHint)->setColor({0, 0, 0});
+				static_cast<CCSprite*>(okHint)->setBlendFunc({GL_ZERO, GL_ZERO});
+			}
+			if (CCNode* backHint = this->m_mainLayer->getChildByID("controller-back-hint")) {
+				backHint->setVisible(false);
+				backHint->setScale(0);
+				backHint->setPosition(this->getPosition() * 10);
+				static_cast<CCSprite*>(backHint)->setOpacity(0);
+				static_cast<CCSprite*>(backHint)->setColor({0, 0, 0});
+				static_cast<CCSprite*>(backHint)->setBlendFunc({GL_ZERO, GL_ZERO});
+			}
+		}
+	}
 	TranslateMenu::encodeToURL(text);
 
 	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.8f);
@@ -62,13 +82,13 @@ bool TranslateMenu::init(const std::string& text) {
 	CCMenuItemSpriteExtra* modSettingsButton = CCMenuItemSpriteExtra::create(modSettingsButtonSprite, this, menu_selector(TranslateMenu::onOpenModSettings));
 	modSettingsButton->setID("mod-setting-button"_spr);
 
-	if (this->m_buttonMenu) {
-		this->m_buttonMenu->addChild(closeButton);
-		this->m_buttonMenu->addChild(libreTranslateButton);
-		this->m_buttonMenu->addChild(deeplTranslateButton);
-		this->m_buttonMenu->addChild(boogleTranslateButton);
-		this->m_buttonMenu->addChild(modSettingsButton);
-		this->m_buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
+	if (CCMenu* buttonMenu = this->m_buttonMenu) {
+		buttonMenu->addChild(closeButton);
+		buttonMenu->addChild(libreTranslateButton);
+		buttonMenu->addChild(deeplTranslateButton);
+		buttonMenu->addChild(boogleTranslateButton);
+		buttonMenu->addChild(modSettingsButton);
+		buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
 	}
 	// yes, jeffery, i need all five buttons in the menu leave me alone :(
 

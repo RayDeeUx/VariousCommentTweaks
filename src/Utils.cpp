@@ -50,7 +50,7 @@ namespace Utils {
 		}
 		if (contains<int>(manager->favoriteUsers, accountID)) {
 			log::info("tried to favorite user: {} (username: {}) but they are already favorited (possibly from friends list)", accountID, username);
-			Notification::create("{} is already a favorite user!")->show();
+			Notification::create(fmt::format("{} is already a favorite user!", username))->show();
 			return false;
 		}
 		log::info("favoriting user: {} (username: {})", accountID, username);
