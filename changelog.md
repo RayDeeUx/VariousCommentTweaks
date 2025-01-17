@@ -1,6 +1,7 @@
 # VariousCommentTweaks Changelog
 ## v1.1.0
 - New button sprites and gradient designs by [Brift](https://twitter.com/BriftXD)!
+- New mod logo based on new button sprites!
 - Change highlighting behavior to use gradients instead of recoloring the background.
   - A toggle has been added in case you prefer the old behavior.
 - Added option to obfuscate ignored users when viewing comments on a level or level list. Enabled by default.
