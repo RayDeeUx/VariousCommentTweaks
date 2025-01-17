@@ -21,7 +21,7 @@ add_library(${PROJECT_NAME} SHARED
     src/CustomListView.cpp
     src/ShareCommentLayer.cpp
     src/CommentCell.cpp
-    src/ProfilePage.cpp
+    src/InfoLayer.cpp
     src/main.cpp
     # Add any extra C++ source files here
 )

@@ -76,7 +76,7 @@
 		},
 		"gradientHighlight": {
 			"name": "Use Gradient For Highlighting Favorite Users",
-			"description": "<cl>Gradients by Brift.</c>",
+			"description": "<cl>Gradients by Brift.</c>\n\nIf disabled, comments will be highlighted with a solid color instead.",
 			"type": "bool",
 			"default": true
 		},
@@ -86,9 +86,14 @@
 			"type": "bool",
 			"default": true
 		},
+		"obfuscateIgnored": {
+			"name": "Obfuscate Usernames + Icons of Ignored People",
+			"type": "bool",
+			"default": true
+		},
 		"blockedAreIgnoredPeople": {
 			"name": "Treat Blocked Users As Ignored People",
-			"description":  "<cy>This will make additional requests to the GD servers. Be careful if you toggle this!</c>",
+			"description": "<cy>This will make additional requests to the GD servers. Be careful if you toggle this!</c>",
 			"type": "bool",
 			"default": false
 		},

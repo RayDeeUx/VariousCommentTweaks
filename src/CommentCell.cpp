@@ -43,10 +43,11 @@ class $modify(MyCommentCell, CommentCell) {
 
 		const bool isLargeComment = this->m_height != 36;
 		const bool isOwnComment = comment->m_userName == Manager::getSharedInstance()->ownUsername;
-		const float spriteScale = isLargeComment ? 1.1f : 1.2f;
-		const float menuContentWidth = !isLargeComment ? 35.f : 45.f;
+		const float spriteScale = isLargeComment ? 1.35f : 1.45f;
+		const float menuContentWidth = !isLargeComment ? 40.f : 50.f;
 
 		CCSprite* copyButtonSprite = CCSprite::createWithSpriteFrameName("copy.png"_spr);
+		copyButtonSprite->setScale(spriteScale);
 		CCMenuItemSpriteExtra* copyStuffButton = CCMenuItemSpriteExtra::create(copyButtonSprite, this, menu_selector(MyCommentCell::onVCTCopy));
 		copyStuffButton->setID("copy-button"_spr);
 
@@ -58,6 +59,7 @@ class $modify(MyCommentCell, CommentCell) {
 		markAsHiddenToggler->setID("hidden-toggler"_spr);
 
 		CCSprite* ignoreButtonSprite = CCSprite::createWithSpriteFrameName("ignore.png"_spr);
+		ignoreButtonSprite->setScale(spriteScale);
 		CCMenuItemSpriteExtra* ignoreButton = CCMenuItemSpriteExtra::create(ignoreButtonSprite, this, menu_selector(MyCommentCell::onVCTIgnore));
 		ignoreButton->setID("ignore-button"_spr);
 
@@ -66,6 +68,7 @@ class $modify(MyCommentCell, CommentCell) {
 		favoriteButton->setID("favorite-button"_spr);
 
 		CCSprite* translateButtonSprite = CCSprite::createWithSpriteFrameName("translate.png"_spr);
+		translateButtonSprite->setScale(spriteScale);
 		CCMenuItemSpriteExtra* translateButton = CCMenuItemSpriteExtra::create(translateButtonSprite, this, menu_selector(MyCommentCell::onVCTTrans));
 		translateButton->setID("translate-button"_spr);
 
@@ -74,7 +77,7 @@ class $modify(MyCommentCell, CommentCell) {
 		CCMenu* menu = CCMenu::create();
 		if (Utils::getBool("copyCommentText")) menu->addChild(copyStuffButton);
 		if (Utils::getBool("toggleCommentVisibility")) menu->addChild(markAsHiddenToggler);
-		if (!isOwnComment) {
+		if (!isOwnComment && fields->authorAccountID > 0) {
 			if (Utils::getBool("ignorePeople")) menu->addChild(ignoreButton);
 			if (Utils::getBool("favoriteUsers")) menu->addChild(favoriteButton);
 		}
@@ -87,7 +90,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (static_cast<std::string>(tempLabel->getString()).length() > 12 && !isLargeComment) menu->setPositionX(menu->getPositionX() + 5.25f); // stupit edge case >:(
 		menu->setPositionY(dateLabel->getPositionY());
 
-		AxisLayout* layout = RowLayout::create()->setGap(2.f)->setDefaultScaleLimits(dateLabelScale, dateLabelScale);
+		AxisLayout* layout = RowLayout::create()->setGap(-2.f)->setDefaultScaleLimits(dateLabelScale, dateLabelScale);
 		layout->ignoreInvisibleChildren(true);
 		menu->setLayout(layout);
 		menu->setID(MENU_ID);
@@ -105,6 +108,7 @@ class $modify(MyCommentCell, CommentCell) {
 		} else if (Utils::getBool("ignorePeople") && Utils::contains<int>(manager->ignoredUsers, fields->authorAccountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 			MyCommentCell::hideButtons(menu);
+			MyCommentCell::obfuscateUser(isLargeComment);
 		} else if (Utils::getBool("personalFilter") && manager->ownUsername != comment->m_userName && string::containsAny(string::toLower(fields->originalCommentText), manager->dislikedWords)) {
 			MyCommentCell::passiveHidingComment("Comment contains word(s) you dislike");
 			MyCommentCell::hideButtons(menu, false);
@@ -193,10 +197,11 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	void onVCTTrans(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
-		TranslateMenu* translateMenu = TranslateMenu::create(m_fields->originalCommentText);
+		const auto fields = m_fields.self();
+		TranslateMenu* translateMenu = TranslateMenu::create(fields->originalCommentText);
 		if (!Utils::isModLoaded("timestepyt.deltarune_textboxes") && !CCKeyboardDispatcher::get()->getShiftKeyPressed())
 			return translateMenu->show();
-		TranslateMenu::encodeToURL(m_fields->originalCommentText);
+		TranslateMenu::encodeToURL(fields->originalCommentText);
 		const std::string& preferred = Utils::getString("preferredTranslator");
 		if (preferred == "Google") return translateMenu->onBoogleTranslate(nullptr);
 		if (preferred == "DeepL") return translateMenu->onDeepLTranslate(nullptr);
@@ -213,23 +218,29 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	void onVCTIgnore(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("ignorePeople") || !m_mainLayer) return;
-		if (m_fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't ignore yourself!")->show();
-		if (m_fields->authorAccountID == 71) return Notification::create("Nice try, but you can't ignore RobTop!")->show();
-		if (!Utils::addIgnoredUser(m_fields->authorAccountID, m_fields->authorUsername)) return;
+		const auto fields = m_fields.self();
+		const int accID = fields->authorAccountID;
+		if (fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't ignore yourself!")->show();
+		if (accID == 71) return Notification::create("Nice try, but you can't ignore RobTop!")->show();
+		if (accID <= 0) return Notification::create("Oof! That's an unregistered user.")->show();
+		if (!Utils::addIgnoredUser(accID, fields->authorUsername)) return;
 		MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 		MyCommentCell::hideButtons(this->m_mainLayer->getChildByID(MENU_ID));
-		Notification::create(fmt::format("{} was ignored!", m_fields->authorUsername))->show();
+		Notification::create(fmt::format("{} was ignored!", fields->authorUsername))->show();
 	}
 	void onVCTFavorite(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !m_mainLayer) return;
-		if (m_fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't favorite yourself!")->show();
-		if (!Utils::addFavoriteUser(m_fields->authorAccountID, m_fields->authorUsername)) return;
+		const auto fields = m_fields.self();
+		const int accID = fields->authorAccountID;
+		if (fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't favorite yourself!")->show();
+		if (accID <= 0) return Notification::create("Oof! That's an unregistered user.")->show();
+		if (!Utils::addFavoriteUser(accID, fields->authorUsername)) return;
 		const auto menu = this->m_mainLayer->getChildByID(MENU_ID);
 		menu->setTag(1);
 		MyCommentCell::recolorCellBackground();
 		MyCommentCell::hideButtons(menu);
 		menu->setTag(0);
-		Notification::create(fmt::format("{} is now a favorite user!", m_fields->authorUsername))->show();
+		Notification::create(fmt::format("{} is now a favorite user!", fields->authorUsername))->show();
 	}
 	void passiveHidingComment(const std::string_view reason) {
 		if (!Utils::modEnabled() || !m_mainLayer) return;
@@ -311,7 +322,7 @@ class $modify(MyCommentCell, CommentCell) {
 		node->updateLayout();
 	}
 	void recolorCellBackground() {
-		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT) || Manager::getSharedInstance()->doNotHighlight) return;
+		if (!Utils::modEnabled() || !Utils::getBool("favoriteUsers") || !this->m_mainLayer || this->m_mainLayer->getChildByID(FAVORITE_USER_HIGHLIGHT) || Manager::getSharedInstance()->doNotHighlight || m_accountComment) return;
 		if (Utils::getBool("gradientHighlight")) {
 			const bool isLargeComment = this->m_height != 36;
 			CCSprite* gradientHighlight = isLargeComment ? CCSprite::createWithSpriteFrameName("largeHighlight.png"_spr) : CCSprite::createWithSpriteFrameName("tinyHighlight.png"_spr);
@@ -342,5 +353,29 @@ class $modify(MyCommentCell, CommentCell) {
 		if (!isOwnComment || comment->m_commentString != lbe->getSettingValue<std::string>("replacementText")) return;
 		comment->m_commentString = fields->originalCommentText;
 		MyCommentCell::passiveHidingComment("Comment is probably(?) likebait");
+	}
+	void obfuscateUser(const bool isLargeComment) {
+		CCNode* usernameButton = this->getChildByIDRecursive("username-button");
+		if (!usernameButton || !m_mainLayer || !Utils::getBool("obfuscateIgnored") || !Utils::modEnabled()) return;
+
+		const auto fields = m_fields.self();
+
+		auto* usernameLabel = usernameButton->getChildByType<CCLabelBMFont>(0);
+		const float originalWidth = usernameLabel->getContentWidth();
+		const float originalScale = usernameLabel->getScale();
+
+		for (CCNode* usernameMenu = usernameButton->getParent(); CCNode* node : CCArrayExt<CCNode*>(usernameMenu->getChildren())) node->setVisible(false);
+		usernameButton->setVisible(true); // since it was set invisible from the previous forloop
+
+		const std::string& ssn = utils::numToString(fields->authorAccountID);
+		const std::string& lastFourSSN = ssn.length() > 4 ? ssn.substr(ssn.length() - 4) : ssn;
+		usernameLabel->setString(fmt::format("IgnoredUser{}", lastFourSSN).c_str());
+		usernameLabel->limitLabelWidth(originalWidth, originalScale, .001f);
+		usernameLabel->setAlignment(kCCTextAlignmentLeft);
+		usernameLabel->setAnchorPoint({0.f, .5f});
+		usernameLabel->setPositionX(isLargeComment ? -30.f : -23.f);
+
+		if (CCNode* playerIcon = m_mainLayer->getChildByIDRecursive("player-icon")) playerIcon->setVisible(false);
+		if (CCNode* percent = m_mainLayer->getChildByIDRecursive("percentage-label")) percent->setVisible(false);
 	}
 };
