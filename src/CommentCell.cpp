@@ -356,7 +356,7 @@ class $modify(MyCommentCell, CommentCell) {
 	}
 	void obfuscateUser(const bool isLargeComment) {
 		CCNode* usernameButton = this->getChildByIDRecursive("username-button");
-		if (!usernameButton || !m_mainLayer || !Utils::getBool("obfuscateIgnored") || !Utils::modEnabled()) return;
+		if (!usernameButton || !m_mainLayer || !Utils::getBool("obfuscateIgnored") || !Utils::modEnabled() || Manager::getSharedInstance()->doNotHighlight || m_accountComment) return;
 
 		const auto fields = m_fields.self();
 
@@ -373,7 +373,7 @@ class $modify(MyCommentCell, CommentCell) {
 		usernameLabel->limitLabelWidth(originalWidth, originalScale, .001f);
 		usernameLabel->setAlignment(kCCTextAlignmentLeft);
 		usernameLabel->setAnchorPoint({0.f, .5f});
-		usernameLabel->setPositionX(isLargeComment ? -30.f : -25.f);
+		usernameLabel->setPositionX(isLargeComment ? -30.f : -24.f);
 
 		if (CCNode* playerIcon = m_mainLayer->getChildByIDRecursive("player-icon")) playerIcon->setVisible(false);
 		if (CCNode* percent = m_mainLayer->getChildByIDRecursive("percentage-label")) percent->setVisible(false);

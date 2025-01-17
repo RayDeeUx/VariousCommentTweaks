@@ -88,6 +88,7 @@
 		},
 		"obfuscateIgnored": {
 			"name": "Obfuscate Usernames + Icons of Ignored People",
+			"description": "<cy>Only applies to viewing comments for levels and level lists.</c>",
 			"type": "bool",
 			"default": true
 		},
