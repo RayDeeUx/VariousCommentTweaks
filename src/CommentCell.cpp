@@ -310,13 +310,13 @@ class $modify(MyCommentCell, CommentCell) {
 				hideToggler->setVisible(false);
 			}
 		}
-		if (Utils::getBool("favoriteUsers")) {
-			if (CCNode* ignoreButton = node->getChildByIDRecursive("ignore-button"_spr); hideIgnoreAndFavoriteButtons) {
+		if (Utils::getBool("ignorePeople") && hideIgnoreAndFavoriteButtons) {
+			if (CCNode* ignoreButton = node->getChildByIDRecursive("ignore-button"_spr)) {
 				ignoreButton->setVisible(false);
 			}
 		}
-		if (Utils::getBool("ignorePeople")) {
-			if (CCNode *favoriteButton = node->getChildByIDRecursive("favorite-button"_spr); hideIgnoreAndFavoriteButtons) {
+		if (Utils::getBool("favoriteUsers") && hideIgnoreAndFavoriteButtons) {
+			if (CCNode *favoriteButton = node->getChildByIDRecursive("favorite-button"_spr)) {
 				favoriteButton->setVisible(false);
 			}
 		}
