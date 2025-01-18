@@ -142,8 +142,7 @@ void TranslateMenu::encodeToURL(const std::string& text) {
 		else if (c == '+' || c == '!' || c == '*' || c == '(' || c == ')' || c == '-' || c == '.' || c == '_' || isalnum(static_cast<unsigned char>(c))) stream << c;
 		else stream << '%' << std::hex << (static_cast<unsigned int>(c) & 0xFF);
 	}
-	Manager* manager = Manager::getSharedInstance();
-	manager->urlEncoded = stream.str();
+	Manager::getSharedInstance()->urlEncoded = stream.str();
 }
 
 std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL) {
