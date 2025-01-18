@@ -1,4 +1,6 @@
 # VariousCommentTweaks Changelog
+## v1.1.1
+- Fix another batch of crashes. Thanks to AlphaQuata for the report!
 ## v1.1.0
 - New button sprites and gradient designs by [Brift](https://twitter.com/BriftXD)!
 - New mod logo based on new button sprites!
