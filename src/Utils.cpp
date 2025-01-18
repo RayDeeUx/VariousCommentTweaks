@@ -25,6 +25,13 @@ namespace Utils {
 
 	std::string getModVersion(Mod* mod) { return mod->getVersion().toNonVString(); }
 
+	void writeToFile(const std::string_view fileName, int accountID, const std::string_view username) {
+		std::ofstream output;
+		output.open((Mod::get()->getConfigDir() / fileName), std::ios_base::app);
+		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
+		output.close();
+	}
+
 	bool addIgnoredUser(int accountID, std::string username) {
 		Manager* manager = Manager::getSharedInstance();
 		if (contains<int>(manager->favoriteUsers, accountID)) {
@@ -34,10 +41,7 @@ namespace Utils {
 		}
 		log::info("ignoring user: {} (username: {})", accountID, username);
 		manager->ignoredUsers.push_back(accountID);
-		std::ofstream output;
-		output.open((Mod::get()->getConfigDir() / "ignoredUsers.txt"), std::ios_base::app);
-		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
-		output.close();
+		Utils::writeToFile("ignoredUsers.txt", accountID, username);
 		return true;
 	}
 
@@ -55,10 +59,7 @@ namespace Utils {
 		}
 		log::info("favoriting user: {} (username: {})", accountID, username);
 		manager->favoriteUsers.push_back(accountID);
-		std::ofstream output;
-		output.open((Mod::get()->getConfigDir() / "favoriteUsers.txt"), std::ios_base::app);
-		output << std::endl << fmt::format("{} # [VCT] Username: {} [VCT] #", accountID, username);
-		output.close();
+		Utils::writeToFile("favoriteUsers.txt", accountID, username);
 		return true;
 	}
 

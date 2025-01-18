@@ -22,6 +22,7 @@ namespace Utils {
 		return std::find(span.begin(), span.end(), value) != span.end();
 	}
 
+	void writeToFile(const std::string_view fileName, int accountID, const std::string_view username);
 	bool addIgnoredUser(int accountID, std::string username);
 	bool addFavoriteUser(int accountID, std::string username);
 	bool updateLists(Manager* manager = Manager::getSharedInstance(), Simpleton* simpleton = Simpleton::get());
