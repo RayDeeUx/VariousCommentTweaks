@@ -146,7 +146,7 @@ void TranslateMenu::encodeToURL(const std::string& text) {
 	manager->urlEncoded = stream.str();
 }
 
-std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL = false) {
+std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL) {
 	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
 	const std::string& targetLangSetting = Utils::getString("targetLanguage");
 	const std::string& sourceLang = languagesMap.contains(sourceLangSetting)
