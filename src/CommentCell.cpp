@@ -147,7 +147,7 @@ class $modify(MyCommentCell, CommentCell) {
 		const float widthDiff = commentWidth - (menuContentWidth * menu->getScale());
 		if (widthDiff <= 0.0f) return;
 
-		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .95f);
+		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .925f);
 	}
 	void applyBlendingToComment() {
 		if (!Utils::modEnabled() || !Utils::getBool("blendingComments")) return;
