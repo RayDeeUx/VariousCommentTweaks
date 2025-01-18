@@ -107,8 +107,8 @@ void TranslateMenu::onBoogleTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
 	Manager* manager = Manager::getSharedInstance();
-	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->languages);
-	const std::string& url = fmt::format("https://translate.google.com/?sl={}&tl={}&text={}", sourceTarget.first, sourceTarget.second, manager->urlEncoded);
+	const auto [sourceLanguage, targetLanguage] = TranslateMenu::findLanguageCodes(manager->languages);
+	const std::string& url = fmt::format("https://translate.google.com/?sl={}&tl={}&text={}", sourceLanguage, targetLanguage, manager->urlEncoded);
 	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 	if (CCKeyboardDispatcher::get()->getAltKeyPressed()) geode::utils::clipboard::write(url);
 	else geode::utils::web::openLinkInBrowser(url);
@@ -118,8 +118,8 @@ void TranslateMenu::onDeepLTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
 	Manager* manager = Manager::getSharedInstance();
-	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->deeplLanguages, true);
-	geode::utils::web::openLinkInBrowser(fmt::format("https://www.deepl.com/en/translator#{}/{}/{}", sourceTarget.second, sourceTarget.first, manager->urlEncoded));
+	const auto [sourceLanguage, targetLanguage] = TranslateMenu::findLanguageCodes(manager->deeplLanguages, true);
+	geode::utils::web::openLinkInBrowser(fmt::format("https://www.deepl.com/en/translator#{}/{}/{}", targetLanguage, sourceLanguage, manager->urlEncoded));
 	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 }
 
@@ -127,8 +127,8 @@ void TranslateMenu::onLibreTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
 	Manager* manager = Manager::getSharedInstance();
-	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->languages);
-	geode::utils::web::openLinkInBrowser(fmt::format("https://libretranslate.com/?source={}&target={}&q={}", sourceTarget.first, sourceTarget.second, manager->urlEncoded));
+	const auto [sourceLanguage, targetLanguage] = TranslateMenu::findLanguageCodes(manager->languages);
+	geode::utils::web::openLinkInBrowser(fmt::format("https://libretranslate.com/?source={}&target={}&q={}", sourceLanguage, targetLanguage, manager->urlEncoded));
 	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 }
 
