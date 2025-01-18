@@ -57,7 +57,7 @@ public:
 	};
 
 	std::unordered_map<std::string, std::string> deeplLanguages = {
-		{"Arabic", "ar"}, {"Bulgarian", "bg"}, {"Czech", "cs"}, {"Danish", "da"},
+		{"Detect language", "es"}, {"Arabic", "ar"}, {"Bulgarian", "bg"}, {"Czech", "cs"}, {"Danish", "da"},
 		{"German", "de"}, {"Greek", "el"}, {"English", "en"}, {"Spanish", "es"},
 		{"Estonian", "et"}, {"Finnish", "fi"}, {"French", "fr"}, {"Hungarian", "hu"},
 		{"Indonesian", "id"}, {"Italian", "it"}, {"Japanese", "ja"}, {"Korean", "ko"},

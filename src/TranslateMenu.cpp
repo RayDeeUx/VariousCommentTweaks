@@ -118,7 +118,7 @@ void TranslateMenu::onDeepLTranslate(CCObject*) {
 	if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
 	this->keyBackClicked();
 	Manager* manager = Manager::getSharedInstance();
-	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->deeplLanguages);
+	const auto sourceTarget = TranslateMenu::findLanguageCodes(manager->deeplLanguages, true);
 	geode::utils::web::openLinkInBrowser(fmt::format("https://www.deepl.com/en/translator#{}/{}/{}", sourceTarget.second, sourceTarget.first, manager->urlEncoded));
 	manager->urlEncoded = ""; // empty string to be safe; url has been created anyway
 }
@@ -146,11 +146,11 @@ void TranslateMenu::encodeToURL(const std::string& text) {
 	manager->urlEncoded = stream.str();
 }
 
-std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap) {
+std::pair<std::string, std::string> TranslateMenu::findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL = false) {
 	const std::string& sourceLangSetting = Utils::getString("sourceLanguage");
 	const std::string& targetLangSetting = Utils::getString("targetLanguage");
 	const std::string& sourceLang = languagesMap.contains(sourceLangSetting)
-	? languagesMap.find(sourceLangSetting)->second : "auto";
+		? languagesMap.find(sourceLangSetting)->second : isDeepL ? "es" : "auto";
 	const std::string& targetLang = languagesMap.contains(targetLangSetting)
 		? languagesMap.find(targetLangSetting)->second : "en";
 	return {sourceLang, targetLang};
