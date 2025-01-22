@@ -2,6 +2,8 @@
 ## v1.1.2
 - The "Detect language" option from the `Translation Source Language` mod setting will be treated as "translate from Spanish", *just* so DeepL will properly read a comment's text from the URL.
   - DeepL's devs are a bit... "special", so this was my most reasonable solution. Thanks to CherryChip for the reminder!
+- Minor futureproofing with hiding comments.
+  - Semi-tempted to hardcode the futureproofing with regex. But I digress.
 ## v1.1.1
 - Fix another batch of crashes. Thanks to AlphaQuata for the report!
 ## v1.1.0

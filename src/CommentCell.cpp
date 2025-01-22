@@ -272,8 +272,11 @@ class $modify(MyCommentCell, CommentCell) {
 
 		if (this->m_height == 36) {
 			const auto label = static_cast<CCLabelBMFont*>(this->getChildByIDRecursive("comment-text-label"));
-			if (const auto node = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label"))
-				node->setVisible(isHiddenBefore);
+			if (const auto doggoNode = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label"))
+				doggoNode->setVisible(isHiddenBefore);
+			if (const auto prevterNode = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-label"))
+				prevterNode->setVisible(isHiddenBefore);
+
 			else label->setVisible(isHiddenBefore);
 
 			if (!fakeLabel) return;
@@ -286,8 +289,10 @@ class $modify(MyCommentCell, CommentCell) {
 		const auto commentTextArea = this->getChildByIDRecursive("comment-text-area");
 		if (!commentTextArea) return;
 
-		if (const auto node = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area"))
-			node->setVisible(isHiddenBefore);
+		if (const auto doggoNode = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area"))
+			doggoNode->setVisible(isHiddenBefore);
+		if (const auto prevterNode = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area"))
+			prevterNode->setVisible(isHiddenBefore);
 		else commentTextArea->setVisible(isHiddenBefore);
 
 		if (!fakeLabel) return;
