@@ -42,7 +42,7 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("blendingComments")) MyCommentCell::applyBlendingToComment();
 
 		const bool isLargeComment = this->m_height != 36;
-		const bool isOwnComment = comment->m_userName == Manager::getSharedInstance()->ownUsername;
+		const bool isOwnComment = utils::string::toLower(comment->m_userName) == Manager::getSharedInstance()->ownUsername;
 		const float spriteScale = isLargeComment ? 1.35f : 1.45f;
 		const float menuContentWidth = !isLargeComment ? 40.f : 50.f;
 

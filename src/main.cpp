@@ -38,7 +38,7 @@ class $modify(MyMenuLayer, MenuLayer) {
 		const auto manager = Manager::getSharedInstance();
 		manager->calledAlready = true;
 
-		manager->ownUsername = GameManager::get()->m_playerName;
+		manager->ownUsername = utils::string::toLower(GameManager::get()->m_playerName);
 
 		return true;
 	}

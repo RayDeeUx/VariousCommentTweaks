@@ -4,6 +4,7 @@
   - DeepL's devs are a bit... "special", so this was my most reasonable solution. Thanks to CherryChip for the reminder!
 - Minor futureproofing with hiding comments.
   - Semi-tempted to hardcode the futureproofing with regex. But I digress.
+- Fix a bug where you could add yourself as a favorite person.
 ## v1.1.1
 - Fix another batch of crashes. Thanks to AlphaQuata for the report!
 ## v1.1.0
