@@ -147,7 +147,20 @@ class $modify(MyCommentCell, CommentCell) {
 		const float widthDiff = commentWidth - (menuContentWidth * menu->getScale());
 		if (widthDiff <= 0.0f) return;
 
-		commentTextLabel->setScale(scale * (widthDiff / commentWidth) * .925f);
+		const float finalCalculation = scale * (widthDiff / commentWidth) * .925f;
+		if (finalCalculation <= 0.0f) return;
+
+		commentTextLabel->setScale(finalCalculation);
+		if (Utils::isModLoaded("thesillydoggo.comment_emojis")) {
+			if (const auto toScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area")) {
+				toScale->setScale(finalCalculation);
+			}
+		}
+		if (Utils::isModLoaded("prevter.comment_emojis")) {
+			if (const auto toScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area")) {
+				toScale->setScale(finalCalculation);
+			}
+		}
 	}
 	void applyBlendingToComment() {
 		if (!Utils::modEnabled() || !Utils::getBool("blendingComments")) return;
