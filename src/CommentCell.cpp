@@ -152,12 +152,12 @@ class $modify(MyCommentCell, CommentCell) {
 
 		commentTextLabel->setScale(finalCalculation);
 		if (Utils::isModLoaded("thesillydoggo.comment_emojis")) {
-			if (const auto toScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area")) {
+			if (const auto toScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
 			}
 		}
 		if (Utils::isModLoaded("prevter.comment_emojis")) {
-			if (const auto toScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area")) {
+			if (const auto toScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
 			}
 		}
