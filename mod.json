@@ -205,13 +205,13 @@
 		},
 		"rescaleLargeComments": {
 			"name": "Rescale Large Comments",
-			"description": "<cl>Original idea by CherryChip.</c>\n\nRescales the comment text in large comments.\n\n<c_>Text from all large comments may overlap outside of its comment box if you enable this.</c>",
+			"description": "<cl>Original idea by CherryChip.</c>\n\nRescales the comment text in large comments.\n\n<c_>Text from large comments may not fit in its comment box if you enable this.</c>",
 			"type": "bool",
 			"default": false
 		},
 		"largeRescaleFactor": {
 			"name": "Large Comments Rescale Factor",
-			"description": "<cl>Original idea by CherryChip.</c>\n\nChoose how much larger/smaller you want the text to be.\n\n<c_>Text from all large comments may overlap outside of its comment box if you change this setting.</c>",
+			"description": "<cl>Original idea by CherryChip.</c>\n\nChoose how much larger/smaller you want the text to be.\n\n<c_>Text from large comments may not fit in its comment box if you change this setting.</c>",
 			"type": "float",
 			"default": 1.0,
 			"min": 0.5,
