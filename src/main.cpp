@@ -33,7 +33,7 @@ $on_mod(Loaded) {
 		FLAlertLayer::create("Heads up!", "By changing this setting, you are aware that <c_>comment text may not fit inside its comment box</c>.", "I Understand")->show();
 	});
 	listenForSettingChanges("largeRescaleFactor", [](double largeRescaleFactor) {
-		if (largeRescaleFactor < 1.0) return;
+		if (largeRescaleFactor <= 1.0) return;
 		FLAlertLayer::create("Heads up!", "By changing this setting, you are aware that <c_>comment text may not fit inside its comment box</c>.", "I Understand")->show();
 	});
 }
