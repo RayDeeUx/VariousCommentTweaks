@@ -28,6 +28,14 @@ $on_mod(Loaded) {
 		title->setString(fmt::format("From: {} • To: {}", otherLanguage, targetLanguage).c_str());
 		title->limitLabelWidth(390.f, .9f, 0.001f);
 	});
+	listenForSettingChanges("rescaleLargeComments", [](bool rescaleLargeComments) {
+		if (!rescaleLargeComments) return;
+		FLAlertLayer::create("Heads up!", "By changing this setting, you are aware that <c_>comment text may not fit inside its comment box</c>.", "I Understand")->show();
+	});
+	listenForSettingChanges("largeRescaleFactor", [](double largeRescaleFactor) {
+		if (largeRescaleFactor < 1.0) return;
+		FLAlertLayer::create("Heads up!", "By changing this setting, you are aware that <c_>comment text may not fit inside its comment box</c>.", "I Understand")->show();
+	});
 }
 
 class $modify(MyMenuLayer, MenuLayer) {

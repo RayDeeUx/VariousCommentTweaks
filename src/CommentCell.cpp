@@ -134,6 +134,7 @@ class $modify(MyCommentCell, CommentCell) {
 		}
 
 		MyCommentCell::likeBaitExterminator(comment, isOwnComment);
+		if (isLargeComment) MyCommentCell::rescaleLargeCommentVCT();
 
 		if (isLargeComment || !commentTextLabel || (!isLargeComment && fields->originalCommentText.length() < 31)) return;
 		if (menu->getChildrenCount() < 1) return menu->removeMeAndCleanup();
@@ -154,15 +155,24 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::isModLoaded("thesillydoggo.comment_emojis")) {
 			if (const auto toScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
-			} else if (const auto textAreaToScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area")) {
-				if (Utils::getBool("rescaleLargeComments")) textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
 			}
 		}
 		if (Utils::isModLoaded("prevter.comment_emojis")) {
 			if (const auto toScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
-			} else if (const auto textAreaToScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area")) {
-				if (Utils::getBool("rescaleLargeComments")) textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
+			}
+		}
+	}
+	void rescaleLargeCommentVCT() {
+		if (this->m_height == 36.f || !Utils::modEnabled() || !Utils::getBool("rescaleLargeComments")) return;
+		if (Utils::isModLoaded("thesillydoggo.comment_emojis")) {
+			if (const auto textAreaToScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area")) {
+				textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
+			}
+		}
+		if (Utils::isModLoaded("prevter.comment_emojis")) {
+			if (const auto textAreaToScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area")) {
+				textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
 			}
 		}
 	}
@@ -212,6 +222,14 @@ class $modify(MyCommentCell, CommentCell) {
 		newLabel->setID("level-or-list-name"_spr);
 		buttonSprite->addChild(newLabel);
 		newLabel->setPosition(label->getPosition());
+
+		if (!static_cast<std::string>(newLabel->getString()).empty()) return;
+
+		newLabel->setVisible(false);
+		newLabel->setOpacity(0);
+		newLabel->removeMeAndCleanup();
+		label->setVisible(true);
+		label->setOpacity(255);
 	}
 	void onVCTTrans(CCObject*) {
 		if (!Utils::modEnabled() || !Utils::getBool("translateComments")) return;
