@@ -199,9 +199,31 @@
 		},
 		"blendingComments": {
 			"name": "Readable Mode (Stronger Blending) [READ!]",
-			"description": "This setting is here if you use a transparent background surrounding comment text (why?). That's usually not true in most cases, so this is disabled by default.",
+			"description": "This setting is here if you use a transparent background surrounding comment text (why?). That's usually not true in most cases, so this is disabled by default.\n\n<cy>For technical reasons, this will not apply when any mods implementing emojis are loaded.</c>",
 			"type": "bool",
 			"default": false
+		},
+		"rescaleLargeComments": {
+			"name": "Rescale Large Comments",
+			"description": "<cl>Original idea by CherryChip.</c>\n\nRescales the comment text in large comments.\n\n<c_>Text from all large comments may overlap outside of its comment box if you enable this.</c>",
+			"type": "bool",
+			"default": false
+		},
+		"largeRescaleFactor": {
+			"name": "Large Comments Rescale Factor",
+			"description": "<cl>Original idea by CherryChip.</c>\n\nChoose how much larger/smaller you want the text to be.\n\n<c_>Text from all large comments may overlap outside of its comment box if you change this setting.</c>",
+			"type": "float",
+			"default": 1.0,
+			"min": 0.5,
+			"max": 2.0,
+			"control": {
+				"slider": true,
+				"input": true,
+				"arrows": true,
+				"big-arrows": true,
+				"arrow-step": 0.1,
+				"big-arrow-step": 1
+			}
 		}
 	},
 	"dependencies": [

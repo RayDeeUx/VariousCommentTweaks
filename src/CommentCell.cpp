@@ -154,11 +154,15 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::isModLoaded("thesillydoggo.comment_emojis")) {
 			if (const auto toScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
+			} else if (const auto textAreaToScale = this->getChildByIDRecursive("thesillydoggo.comment_emojis/comment-text-area")) {
+				if (Utils::getBool("rescaleLargeComments")) textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
 			}
 		}
 		if (Utils::isModLoaded("prevter.comment_emojis")) {
 			if (const auto toScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-label")) {
 				toScale->setScale(finalCalculation);
+			} else if (const auto textAreaToScale = this->getChildByIDRecursive("prevter.comment_emojis/comment-text-area")) {
+				if (Utils::getBool("rescaleLargeComments")) textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
 			}
 		}
 	}
