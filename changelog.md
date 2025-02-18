@@ -1,9 +1,11 @@
 # VariousCommentTweaks Changelog
+## v1.1.4
+- Added option to rescale text from large comments, <cl>suggested by [CherryChip](https://youtube.com/channel/UCEk7PhJTjabhGsov0l9JUzg)</c>.
 ## v1.1.3
 - Attempt to scale comments from Emojis in Comments to avoid overlap.
 ## v1.1.2
 - The "Detect language" option from the `Translation Source Language` mod setting will be treated as "translate from Spanish", *just* so DeepL will properly read a comment's text from the URL.
-  - DeepL's devs are a bit... "special", so this was my most reasonable solution. Thanks to CherryChip for the reminder!
+  - DeepL's devs are a bit... "special", so this was my most reasonable solution. Thanks to [CherryChip](https://youtube.com/channel/UCEk7PhJTjabhGsov0l9JUzg) for the reminder!
 - Minor futureproofing with hiding comments.
   - Semi-tempted to hardcode the futureproofing with regex. But I digress.
 - Fix a bug where you could add yourself as a favorite person.
@@ -15,7 +17,7 @@
 - Change highlighting behavior to use gradients instead of recoloring the background.
   - A toggle has been added in case you prefer the old behavior.
 - Added option to obfuscate ignored users when viewing comments on a level or level list. Enabled by default.
-- Make controller glyphs in the Translation menu invisible. Thanks to CherryChip for reporting!
+- Make controller glyphs in the Translation menu invisible. Thanks to [CherryChip](https://youtube.com/channel/UCEk7PhJTjabhGsov0l9JUzg) for reporting!
 ## v1.0.4
 - Fix one unexpected crash.
 - Removed Mr. Bean from the premises.
