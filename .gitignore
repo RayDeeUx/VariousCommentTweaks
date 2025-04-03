@@ -61,4 +61,4 @@ build-*/
 
 # CLion
 .idea/
-/cmake-*/
+/cmake-build-*/
