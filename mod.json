@@ -3,8 +3,8 @@
 	"gd": {
 		"win": "2.2074",
 		"mac": "2.2074",
-		"android": "2.2074",
-		"ios": "2.2074"
+		"ios": "2.2074",
+		"android": "2.2074"
 	},
 	"id": "raydeeux.variouscommenttweaks",
 	"name": "VariousCommentTweaks",
@@ -37,7 +37,12 @@
 		"compactProfileComments": {
 			"name": "Compact Profile Comments",
 			"type": "bool",
-			"default": true
+			"default": {
+				"win": true,
+				"mac": true,
+				"ios": false,
+				"android": false
+			}
 		},
 		"largerButtons": {
 			"name": "Slightly Larger Buttons",
@@ -45,6 +50,7 @@
 			"default": {
 				"win": false,
 				"mac": false,
+				"ios": true,
 				"android": true
 			}
 		},
