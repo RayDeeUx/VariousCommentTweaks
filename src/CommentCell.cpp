@@ -175,6 +175,9 @@ class $modify(MyCommentCell, CommentCell) {
 				textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
 			}
 		}
+		if (const auto textAreaToScale = this->getChildByIDRecursive("comment-text-area")) {
+			textAreaToScale->setScale(textAreaToScale->getScale() * static_cast<float>(Utils::getDouble("largeRescaleFactor")));
+		}
 	}
 	void applyBlendingToComment() {
 		if (!Utils::modEnabled() || !Utils::getBool("blendingComments")) return;

@@ -1,5 +1,6 @@
 # VariousCommentTweaks Changelog
 ## v1.1.4
+- Experimental iOS support.
 - Added option to rescale text from large comments, <cl>suggested by [CherryChip](https://youtube.com/channel/UCEk7PhJTjabhGsov0l9JUzg)</c>.
 ## v1.1.3
 - Attempt to scale comments from Emojis in Comments to avoid overlap.
