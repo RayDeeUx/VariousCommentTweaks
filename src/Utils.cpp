@@ -149,10 +149,12 @@ namespace Utils {
 		}
 		if (Utils::getBool("friendsAreFavoriteUsers")) {
 			glm->m_userListDelegate = simpleton;
+			log::info("fetching UserListType::Friends");
 			glm->getUserList(UserListType::Friends);
 		}
 		if (Utils::getBool("blockedAreIgnoredPeople")) {
 			glm->m_userListDelegate = simpleton;
+			log::info("fetching UserListType::Blocked");
 			glm->getUserList(UserListType::Blocked);
 		}
 		return true;
