@@ -145,7 +145,7 @@ namespace Utils {
 		GameLevelManager* glm = GameLevelManager::get();
 		if (!glm) {
 			log::info("gamelevelmanager not found, oof!");
-			return true;
+			return false;
 		}
 		if (Utils::getBool("friendsAreFavoriteUsers")) {
 			glm->m_userListDelegate = simpleton;
