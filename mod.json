@@ -104,6 +104,12 @@
 			"type": "bool",
 			"default": true
 		},
+		"trulyHideIgnored": {
+			"name": "TRULY Hide Comments From Ignored People",
+			"description": "<cl>Original idea by Nightcat.</c>\n\n<c_>TRULY</c> hide comments from people you've ignored.\n<c_>NOTHING</c> about the comment will be visible--not the username, the like button, or buttons from other mods attached to the specific comment (including buttons from this mod).\n\n<cy>Note that you'll get a blank space where the ignored person's comment would be, because any other approach risks crashing the game.</c>",
+			"type": "bool",
+			"default": false
+		},
 		"blockedAreIgnoredPeople": {
 			"name": "Treat Blocked Users As Ignored People",
 			"description": "<cy>This will make additional requests to the GD servers. Be careful if you toggle this!</c>",

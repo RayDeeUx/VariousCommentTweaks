@@ -289,6 +289,17 @@ class $modify(MyCommentCell, CommentCell) {
 	void hideCommentVCT(const std::string_view reason = "Comment was hidden manually") {
 		if (!Utils::modEnabled() || !m_mainLayer) return;
 
+		if (Utils::getBool("trulyHideIgnored") && reason == "Comment from someone you ignored") {
+			this->setUserObject("truly-ignored-comment"_spr, CCBool::create(true));
+			this->setPositionX(-65536);
+			this->setPositionY(-65536);
+			m_fields->isHidden = true;
+			this->setZOrder(-65536);
+			this->setVisible(false);
+			this->setScale(.0f);
+			return;
+		}
+
 		const bool isHiddenBefore = m_fields->isHidden;
 		m_fields->isHidden = !m_fields->isHidden;
 
