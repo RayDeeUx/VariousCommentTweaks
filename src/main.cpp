@@ -10,6 +10,7 @@ $on_mod(Loaded) {
 	(void) Mod::get()->registerCustomSettingType("updatelists", &MyButtonSettingV3::parse);
 	(void) Mod::get()->registerCustomSettingType("likebaitexterminator", &MyButtonSettingV3::parse);
 	(void) Utils::updateLists();
+	Mod::get()->setLoggingEnabled(Utils::getBool("logging"));
 	listenForSettingChanges("sourceLanguage", [](std::string sourceLanguage) {
 		if (sourceLanguage == "Detect language") sourceLanguage = "Auto";
 		std::string otherLanguage = Utils::getString("targetLanguage");
@@ -35,6 +36,9 @@ $on_mod(Loaded) {
 	listenForSettingChanges("largeRescaleFactor", [](double largeRescaleFactor) {
 		if (largeRescaleFactor <= 1.0) return;
 		FLAlertLayer::create("Heads up!", "By changing this setting, you are aware that <c_>comment text may not fit inside its comment box</c>.", "I Understand")->show();
+	});
+	listenForSettingChanges("logging", [](bool logging){
+		Mod::get()->setLoggingEnabled(logging);
 	});
 }
 

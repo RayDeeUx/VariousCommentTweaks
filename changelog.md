@@ -1,4 +1,8 @@
 # VariousCommentTweaks Changelog
+## v1.2.0
+- Added an option to *truly* hide levels/level lists from ignored people (requested by [Nightcat](https://github.com/Nightcaat)).
+- Fixed a potential bug where requesting the friends list and blocked users list in GD at the same time would fail.
+- Added logging options, because why not.
 ## v1.1.4
 - Experimental iOS support.
 - Added option to rescale text from large comments, <cl>suggested by [CherryChip](https://youtube.com/channel/UCEk7PhJTjabhGsov0l9JUzg)</c>.
