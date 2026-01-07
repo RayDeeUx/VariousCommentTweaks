@@ -8,7 +8,7 @@ using namespace geode::prelude;
 
 TranslateMenu* TranslateMenu::create(const std::string& text) {
 	TranslateMenu* ret = new TranslateMenu();
-	if (ret && ret->initAnchored(420.f, 300.f, text, "square01_001.png")) {
+	if (ret && ret->initAnchored(420.f, 200.f, text, "GJ_square02.png")) {
 		ret->autorelease();
 		return ret;
 	}
@@ -27,7 +27,7 @@ bool TranslateMenu::setup(const std::string& text) {
 	this->m_bgSprite->setID("background"_spr);
 	TranslateMenu::encodeToURL(text);
 
-	ButtonSprite* cancelButton = ButtonSprite::create("    Cancel", "goldFont.fnt", "GJ_button_01.png", 0.8f);
+	ButtonSprite* cancelButton = ButtonSprite::create("    Close", "goldFont.fnt", "GJ_button_01.png", 0.7f);
 	CCMenuItemSpriteExtra* cancelTranslateButton = CCMenuItemSpriteExtra::create(cancelButton, this, menu_selector(TranslateMenu::onClose));
 	CCSprite* cancelButtonLogo = CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png");
 	cancelButtonLogo->setScale(0.9f);
@@ -36,7 +36,7 @@ bool TranslateMenu::setup(const std::string& text) {
 	cancelButtonLogo->setPosition({24, 15});
 	cancelTranslateButton->setID("cancel-button"_spr);
 
-	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.8f);
+	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.7f);
 	CCMenuItemSpriteExtra* libreTranslateButton = CCMenuItemSpriteExtra::create(libreTranslate, this, menu_selector(TranslateMenu::onLibreTranslate));
 	CCSprite* libreTranslateLogo = CCSprite::createWithSpriteFrameName("libreTranslate.png"_spr);
 	libreTranslateLogo->setScale(1.8f);
@@ -45,7 +45,7 @@ bool TranslateMenu::setup(const std::string& text) {
 	libreTranslateLogo->setPosition({24, 15});
 	libreTranslateButton->setID("libre-translate-button"_spr);
 
-	ButtonSprite* deeplTranslate = ButtonSprite::create("    DeepL", "goldFont.fnt", "GJ_button_01.png", 0.8f);
+	ButtonSprite* deeplTranslate = ButtonSprite::create("    DeepL", "goldFont.fnt", "GJ_button_01.png", 0.7f);
 	CCMenuItemSpriteExtra* deeplTranslateButton = CCMenuItemSpriteExtra::create(deeplTranslate, this, menu_selector(TranslateMenu::onDeepLTranslate));
 	CCSprite* deeplTranslateLogo = CCSprite::createWithSpriteFrameName("deeplTranslate.png"_spr);
 	deeplTranslateLogo->setScale(1.8f);
@@ -54,7 +54,7 @@ bool TranslateMenu::setup(const std::string& text) {
 	deeplTranslateLogo->setPosition({24, 15});
 	deeplTranslateButton->setID("deepl-translate-button"_spr);
 
-	ButtonSprite* boogleTranslate = ButtonSprite::create("    Google", "goldFont.fnt", "GJ_button_01.png", 0.8f);
+	ButtonSprite* boogleTranslate = ButtonSprite::create("    Google", "goldFont.fnt", "GJ_button_01.png", 0.7f);
 	CCMenuItemSpriteExtra* boogleTranslateButton = CCMenuItemSpriteExtra::create(boogleTranslate, this, menu_selector(TranslateMenu::onBoogleTranslate));
 	CCSprite* boogleTranslateLogo = CCSprite::createWithSpriteFrameName("boogleTranslate.png"_spr);
 	boogleTranslateLogo->setScale(1.8f);
@@ -64,6 +64,7 @@ bool TranslateMenu::setup(const std::string& text) {
 	boogleTranslateButton->setID("boogle-translate-button"_spr);
 
 	CCSprite* modSettingsButtonSprite = CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");
+	modSettingsButtonSprite->setScale(.75f);
 	CCMenuItemSpriteExtra* modSettingsButton = CCMenuItemSpriteExtra::create(modSettingsButtonSprite, this, menu_selector(TranslateMenu::onOpenModSettings));
 	modSettingsButton->setID("mod-setting-button"_spr);
 
@@ -77,9 +78,10 @@ bool TranslateMenu::setup(const std::string& text) {
 	buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
 	buttonMenu->setID("translate-options-menu"_spr);
 
-	geode::SimpleTextArea* originalCommentText = geode::SimpleTextArea::create(text);
+	geode::SimpleTextArea* originalCommentText = geode::SimpleTextArea::create("");
 	originalCommentText->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
 	originalCommentText->setWidth(this->m_mainLayer->getContentWidth() * .95f * .95f);
+	originalCommentText->setText(text);
 	originalCommentText->setID("original-comment-text"_spr);
 
 	this->m_mainLayer->addChildAtPosition(buttonMenu, Anchor::Bottom, {0.f, 24.f});
