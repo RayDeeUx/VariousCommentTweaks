@@ -1,12 +1,11 @@
 #pragma once
 
-class TranslateMenu : public FLAlertLayer {
+class TranslateMenu final : public geode::Popup<const std::string&> {
 protected:
-	bool init(const std::string& text);
 	void onOpenModSettings(CCObject*);
-	void onCloseTranslateMenu(CCObject*);
 public:
 	static TranslateMenu* create(const std::string&);
+	bool setup(const std::string& text) override;
 	static std::pair<std::string, std::string> findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL = false);
 	static void encodeToURL(const std::string&);
 	void onBoogleTranslate(CCObject*);

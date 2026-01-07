@@ -7,45 +7,34 @@
 using namespace geode::prelude;
 
 TranslateMenu* TranslateMenu::create(const std::string& text) {
-	auto *ret = new TranslateMenu();
-	if (ret && ret->init(text)) {
+	TranslateMenu* ret = new TranslateMenu();
+	if (ret && ret->initAnchored(420.f, 300.f, text, "square01_001.png")) {
 		ret->autorelease();
 		return ret;
 	}
-	CC_SAFE_DELETE(ret);
+	delete ret;
 	return nullptr;
 }
 
-bool TranslateMenu::init(const std::string& text) {
+bool TranslateMenu::setup(const std::string& text) {
 	std::string sourceLanguage = Utils::getString("sourceLanguage");
-	if (string::toLower(sourceLanguage) == "detect language") sourceLanguage = "Auto";
-	if (!FLAlertLayer::init(nullptr, fmt::format("From: {} • To: {}", sourceLanguage, Utils::getString("targetLanguage")).c_str(),
-		text, "foo", nullptr, 420.f, false, 300.f, .69f)) return false;
-	this->setID("TranslateMenu");
-	if (this->m_button1) this->m_button1->getParent()->removeMeAndCleanup(); // the parent is a CCMenuItemSpriteExtra, calm down
-	if (this->m_buttonMenu) this->m_buttonMenu->setContentWidth(390.f);
-	if (this->m_mainLayer) {
-		static_cast<CCLabelBMFont*>(this->m_mainLayer->getChildByID("title"))->limitLabelWidth(390.f, .9f, 0.001f);
-		if (PlatformToolbox::isControllerConnected()) {
-			if (CCNode* okHint = this->m_mainLayer->getChildByID("controller-ok-hint")) {
-				okHint->setVisible(false);
-				okHint->setScale(0);
-				okHint->setPosition(this->getPosition() * 10);
-				static_cast<CCSprite*>(okHint)->setOpacity(0);
-				static_cast<CCSprite*>(okHint)->setColor({0, 0, 0});
-				static_cast<CCSprite*>(okHint)->setBlendFunc({GL_ZERO, GL_ZERO});
-			}
-			if (CCNode* backHint = this->m_mainLayer->getChildByID("controller-back-hint")) {
-				backHint->setVisible(false);
-				backHint->setScale(0);
-				backHint->setPosition(this->getPosition() * 10);
-				static_cast<CCSprite*>(backHint)->setOpacity(0);
-				static_cast<CCSprite*>(backHint)->setColor({0, 0, 0});
-				static_cast<CCSprite*>(backHint)->setBlendFunc({GL_ZERO, GL_ZERO});
-			}
-		}
-	}
+	if (geode::utils::string::toLower(sourceLanguage) == "detect language") sourceLanguage = "Auto";
+	this->setTitle(fmt::format("From: {} • To: {}", sourceLanguage, Utils::getString("targetLanguage")));
+	this->setID("TranslateMenu"_spr);
+
+	this->m_title->limitLabelWidth(390.f, .9f, 0.001f);
+	this->m_title->setID("title"_spr);
+	this->m_bgSprite->setID("background"_spr);
 	TranslateMenu::encodeToURL(text);
+
+	ButtonSprite* cancelButton = ButtonSprite::create("    Cancel", "goldFont.fnt", "GJ_button_01.png", 0.8f);
+	CCMenuItemSpriteExtra* cancelTranslateButton = CCMenuItemSpriteExtra::create(cancelButton, this, menu_selector(TranslateMenu::onClose));
+	CCSprite* cancelButtonLogo = CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png");
+	cancelButtonLogo->setScale(0.9f);
+	cancelButtonLogo->setID("cancel-logo"_spr);
+	cancelButton->addChild(cancelButtonLogo);
+	cancelButtonLogo->setPosition({24, 15});
+	cancelTranslateButton->setID("cancel-button"_spr);
 
 	ButtonSprite* libreTranslate = ButtonSprite::create("    LibreTranslate", "goldFont.fnt", "GJ_button_01.png", 0.8f);
 	CCMenuItemSpriteExtra* libreTranslateButton = CCMenuItemSpriteExtra::create(libreTranslate, this, menu_selector(TranslateMenu::onLibreTranslate));
@@ -74,33 +63,33 @@ bool TranslateMenu::init(const std::string& text) {
 	boogleTranslateLogo->setPosition({24, 15});
 	boogleTranslateButton->setID("boogle-translate-button"_spr);
 
-	CCSprite* closeButtonSprite = CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png");
-	CCMenuItemSpriteExtra* closeButton = CCMenuItemSpriteExtra::create(closeButtonSprite, this, menu_selector(TranslateMenu::onCloseTranslateMenu));
-	closeButton->setID("close-button"_spr);
-
 	CCSprite* modSettingsButtonSprite = CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");
 	CCMenuItemSpriteExtra* modSettingsButton = CCMenuItemSpriteExtra::create(modSettingsButtonSprite, this, menu_selector(TranslateMenu::onOpenModSettings));
 	modSettingsButton->setID("mod-setting-button"_spr);
 
-	if (CCMenu* buttonMenu = this->m_buttonMenu) {
-		buttonMenu->addChild(closeButton);
-		buttonMenu->addChild(libreTranslateButton);
-		buttonMenu->addChild(deeplTranslateButton);
-		buttonMenu->addChild(boogleTranslateButton);
-		buttonMenu->addChild(modSettingsButton);
-		buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
-	}
-	// yes, jeffery, i need all five buttons in the menu leave me alone :(
+	CCMenu* buttonMenu = CCMenu::create();
+	buttonMenu->setContentWidth(390.f);
+	buttonMenu->addChild(cancelTranslateButton);
+	buttonMenu->addChild(libreTranslateButton);
+	buttonMenu->addChild(deeplTranslateButton);
+	buttonMenu->addChild(boogleTranslateButton);
+	buttonMenu->addChild(modSettingsButton);
+	buttonMenu->setLayout(RowLayout::create()->setAxisAlignment(AxisAlignment::Center)->setAutoScale(true));
+	buttonMenu->setID("translate-options-menu"_spr);
+
+	geode::SimpleTextArea* originalCommentText = geode::SimpleTextArea::create(text);
+	originalCommentText->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+	originalCommentText->setWidth(this->m_mainLayer->getContentWidth() * .95f * .95f);
+	originalCommentText->setID("original-comment-text"_spr);
+
+	this->m_mainLayer->addChildAtPosition(buttonMenu, Anchor::Bottom, {0.f, 24.f});
+	this->m_mainLayer->addChildAtPosition(originalCommentText, Anchor::Center);
 
 	return true;
 }
 
 void TranslateMenu::onOpenModSettings(CCObject*) {
 	openSettingsPopup(Mod::get());
-}
-
-void TranslateMenu::onCloseTranslateMenu(CCObject*) {
-	this->keyBackClicked();
 }
 
 void TranslateMenu::onBoogleTranslate(CCObject*) {

@@ -99,13 +99,13 @@ class $modify(MyCommentCell, CommentCell) {
 		if (Utils::getBool("largerButtons")) menu->setScale(1.2f); else menu->setScale(1.0f);
 		this->m_mainLayer->addChild(menu);
 
-		menu->setTag(0);
+		menu->setTag(-1);
 
 		if (Utils::getBool("favoriteUsers") && Utils::contains<int>(manager->favoriteUsers, fields->authorAccountID)) {
 			menu->setTag(1);
 			MyCommentCell::recolorCellBackground();
 			MyCommentCell::hideButtons(menu);
-			menu->setTag(0);
+			menu->setTag(-1);
 		} else if (Utils::getBool("ignorePeople") && Utils::contains<int>(manager->ignoredUsers, fields->authorAccountID)) {
 			MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 			MyCommentCell::hideButtons(menu);
@@ -261,7 +261,7 @@ class $modify(MyCommentCell, CommentCell) {
 		const int accID = fields->authorAccountID;
 		if (fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't ignore yourself!")->show();
 		if (accID == 71) return Notification::create("Nice try, but you can't ignore RobTop!")->show();
-		if (accID <= 0) return Notification::create("Oof! That's an unregistered user.")->show();
+		if (accID < 1) return Notification::create("Oof! That's an unregistered user.")->show();
 		if (!Utils::addIgnoredUser(accID, fields->authorUsername)) return;
 		MyCommentCell::passiveHidingComment("Comment from someone you ignored");
 		MyCommentCell::hideButtons(this->m_mainLayer->getChildByID(MENU_ID));
@@ -272,13 +272,13 @@ class $modify(MyCommentCell, CommentCell) {
 		const auto fields = m_fields.self();
 		const int accID = fields->authorAccountID;
 		if (fields->authorUsername == Manager::getSharedInstance()->ownUsername) return Notification::create("You can't favorite yourself!")->show();
-		if (accID <= 0) return Notification::create("Oof! That's an unregistered user.")->show();
+		if (accID < 1) return Notification::create("Oof! That's an unregistered user.")->show();
 		if (!Utils::addFavoriteUser(accID, fields->authorUsername)) return;
 		const auto menu = this->m_mainLayer->getChildByID(MENU_ID);
 		menu->setTag(1);
 		MyCommentCell::recolorCellBackground();
 		MyCommentCell::hideButtons(menu);
-		menu->setTag(0);
+		menu->setTag(-1);
 		Notification::create(fmt::format("{} is now a favorite user!", fields->authorUsername))->show();
 	}
 	void passiveHidingComment(const std::string_view reason) {
