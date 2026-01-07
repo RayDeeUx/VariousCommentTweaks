@@ -87,6 +87,9 @@ bool TranslateMenu::setup(const std::string& text) {
 	this->m_mainLayer->addChildAtPosition(buttonMenu, Anchor::Bottom, {0.f, 24.f});
 	this->m_mainLayer->addChildAtPosition(originalCommentText, Anchor::Center);
 
+	this->m_closeBtn->setID("close-button"_spr);
+	this->m_buttonMenu->setID("button-menu"_spr);
+
 	return true;
 }
 

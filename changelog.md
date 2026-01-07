@@ -1,4 +1,6 @@
 # VariousCommentTweaks Changelog
+## v1.2.1
+- Minor refactors to make the Translate menu a bit more stable than usual.
 ## v1.2.0
 - Added an option to *truly* hide levels/level lists from ignored people (requested by [Nightcat](https://github.com/Nightcaat)).
 - Fixed a potential bug where requesting the friends list and blocked users list in GD at the same time would fail.
