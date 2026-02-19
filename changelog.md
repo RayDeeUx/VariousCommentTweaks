@@ -1,4 +1,6 @@
 # VariousCommentTweaks Changelog
+## v1.2.2
+- Port to GD 2.2081.
 ## v1.2.1
 - Minor refactors to make the Translate menu a bit more stable than usual.
 ## v1.2.0
