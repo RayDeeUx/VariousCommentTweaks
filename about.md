@@ -11,4 +11,8 @@ Things you could never do with comments before:
 
 Button sprites from v1.1.0 and onward by [Brift](https://twitter.com/BriftXD).
 
+Also check out LikeBaitExterminator!
+
+<mod:raydeeux.likebaitexterminator>
+
 This [Geode mod](https://geode-sdk.org) is licensed under LGPLv2.
