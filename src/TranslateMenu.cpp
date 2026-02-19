@@ -16,7 +16,7 @@ TranslateMenu* TranslateMenu::create(const std::string& text) {
 	return nullptr;
 }
 
-bool TranslateMenu::setup(const std::string& text) {
+bool TranslateMenu::init(const std::string& text) {
 	if (!geode::Popup::init(420.f, 200.f, "GJ_square02.png")) return false;
 
 	std::string sourceLanguage = Utils::getString("sourceLanguage");
