@@ -8,7 +8,7 @@ using namespace geode::prelude;
 
 TranslateMenu* TranslateMenu::create(const std::string& text) {
 	TranslateMenu* ret = new TranslateMenu();
-	if (ret && ret->initAnchored(420.f, 200.f, text, "GJ_square02.png")) {
+	if (ret && ret->init(text)) {
 		ret->autorelease();
 		return ret;
 	}
@@ -17,6 +17,8 @@ TranslateMenu* TranslateMenu::create(const std::string& text) {
 }
 
 bool TranslateMenu::setup(const std::string& text) {
+	if (!geode::Popup::init(420.f, 200.f, "GJ_square02.png")) return false;
+
 	std::string sourceLanguage = Utils::getString("sourceLanguage");
 	if (geode::utils::string::toLower(sourceLanguage) == "detect language") sourceLanguage = "Auto";
 	this->setTitle(fmt::format("From: {} • To: {}", sourceLanguage, Utils::getString("targetLanguage")));

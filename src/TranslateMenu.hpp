@@ -1,11 +1,11 @@
 #pragma once
 
-class TranslateMenu final : public geode::Popup<const std::string&> {
+class TranslateMenu final : public geode::Popup {
 protected:
 	void onOpenModSettings(cocos2d::CCObject*);
 public:
 	static TranslateMenu* create(const std::string&);
-	bool setup(const std::string& text) override;
+	bool init(const std::string& text) override;
 	static std::pair<std::string, std::string> findLanguageCodes(const std::unordered_map<std::string, std::string>& languagesMap, const bool isDeepL = false);
 	static void encodeToURL(const std::string&);
 	void onBoogleTranslate(cocos2d::CCObject*);
